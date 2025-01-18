@@ -3,39 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fun Interactive Page</title>
+  <title>Interactive 3D Universe</title>
   <style>
     body {
       margin: 0;
       overflow: hidden;
-      background: linear-gradient(45deg, #1d3557, #457b9d, #a8dadc, #f1faee);
-      background-size: 400% 400%;
-      animation: gradient 15s ease infinite;
       font-family: Arial, sans-serif;
+      background: black;
       color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
     }
 
     .message {
       position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
       text-align: center;
       z-index: 10;
-      font-size: 2rem;
       animation: fadeIn 3s ease-in-out infinite alternate;
     }
 
@@ -47,70 +32,62 @@
 </head>
 <body>
   <div class="message">
-    Welcome! Move your mouse around and enjoy the animation! 😊
+    ✨ Welcome to the Interactive Universe! ✨<br>
+    Move your mouse or scroll to explore!
   </div>
-  <canvas id="canvas"></canvas>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const starGeometry = new THREE.BufferGeometry();
+    const starCount = 10000;
+    const starPositions = new Float32Array(starCount * 3);
 
-    const particles = [];
-
-    class Particle {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.size = Math.random() * 5 + 1;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5;
-        this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.size > 0.2) this.size -= 0.1;
-      }
-
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+    for (let i = 0; i < starCount * 3; i++) {
+      starPositions[i] = (Math.random() - 0.5) * 2000;
     }
 
-    function handleParticles() {
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-        if (particles[i].size <= 0.2) {
-          particles.splice(i, 1);
-          i--;
-        }
-      }
-    }
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
 
-    window.addEventListener("mousemove", (event) => {
-      for (let i = 0; i < 5; i++) {
-        particles.push(new Particle(event.x, event.y));
-      }
+    const ambientLight = new THREE.AmbientLight(0x404040, 2);
+    scene.add(ambientLight);
+
+    camera.position.z = 5;
+
+    const mouse = { x: 0, y: 0 };
+    document.addEventListener('mousemove', (event) => {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    document.addEventListener('scroll', () => {
+      camera.position.z += window.scrollY * 0.001;
     });
 
     function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      handleParticles();
+      stars.rotation.x += 0.0005;
+      stars.rotation.y += 0.0005;
+
+      camera.position.x += (mouse.x - camera.position.x) * 0.05;
+      camera.position.y += (-mouse.y - camera.position.y) * 0.05;
+
+      renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
 
     animate();
 
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
     });
   </script>
 </body>
