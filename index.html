@@ -3,91 +3,236 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive 3D Universe</title>
+  <title>500 Internal Server Error</title>
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
   <style>
     body {
+      background-color: #111111;
       margin: 0;
-      overflow: hidden;
       font-family: Arial, sans-serif;
-      background: black;
-      color: white;
     }
 
-    .message {
+    .board {
       position: absolute;
-      top: 20px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.5rem;
+      height: 150px;
+      width: 500px;
+      margin: -75px 0 0 -250px;
+      padding: 20px;
+      font: 75px/75px Monoton, cursive;
       text-align: center;
-      z-index: 10;
-      animation: fadeIn 3s ease-in-out infinite alternate;
+      text-transform: uppercase;
+      text-shadow: 0 0 80px red, 0 0 30px FireBrick, 0 0 6px DarkRed;
+      color: red;
     }
 
-    @keyframes fadeIn {
-      0% { opacity: 0.5; }
-      100% { opacity: 1; }
+    #error {
+      color: #fff;
+      text-shadow: 0 0 80px #ffffff, 0 0 30px #008000, 0 0 6px #0000ff;
     }
   </style>
 </head>
 <body>
-  <div class="message">
-    ✨ Welcome to the Interactive Universe! ✨<br>
-    Move your mouse or scroll to explore!
+  <div class="board">
+    <p id="error">Internal Server Error</p>
+    <p id="code">500</p>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    (function($) {
+      "use strict";
+      var t = function(t, n) {
+        this._el = $(t);
+        if (this.repeat()) return true;
+        this._settings = n;
+        this._powerOn = false;
+        this._loopTimeout = 0;
+        this._el.html(this.buildHTML());
+        this._items = this._el.find("span.novacancy");
+        this._blinkArr = this.arrayMake();
+        this.bindEvent();
+        this.writeCSS();
+        if (this._settings.autoOn) this.blinkOn();
+      };
+      t.prototype.repeat = function() {
+        var e = this._el;
+        if (e[0].novacancy) {
+          return true;
+        } else {
+          e[0].novacancy = true;
+          return false;
+        }
+      };
+      t.prototype.writeCSS = function() {
+        var t = this.css();
+        var n = $("<style>" + t + "</style>");
+        $("body").append(n);
+      };
+      t.prototype.selector = function() {
+        var e = this._el;
+        var t = e[0].tagName;
+        if (e[0].id) t += "#" + e[0].id;
+        if (e[0].className) t += "." + e[0].className;
+        return t;
+      };
+      t.prototype.css = function() {
+        var e = this.selector();
+        var t = this._settings;
+        var n = "text-shadow: " + t.glow.toString() + ";";
+        var r = "color: " + t.color + ";" + n;
+        var i = "color: " + t.color + "; opacity: 0.3;";
+        var s = "";
+        s += e + " .novacancy.on { " + r + " }\n";
+        s += e + " .novacancy.off { " + i + " }\n";
+        return s;
+      };
+      t.prototype.rand = function(e, t) {
+        return Math.floor(Math.random() * (t - e + 1) + e);
+      };
+      t.prototype.blink = function(e) {
+        var t = this._settings;
+        var n = this;
+        this.off(e);
+        e[0].blinking = true;
+        setTimeout(function() {
+          n.on(e);
+          e[0].blinking = false;
+          n.reblink(e);
+        }, this.rand(t.blinkMin, t.blinkMax));
+      };
+      t.prototype.on = function(e) {
+        e.removeClass("off").addClass("on");
+      };
+      t.prototype.off = function(e) {
+        e.removeClass("on").addClass("off");
+      };
+      t.prototype.buildHTML = function() {
+        var t = this._el;
+        var n = "";
+        $.each(t.contents(), function(t, r) {
+          if (r.nodeType == 3) {
+            var i = r.nodeValue.split("");
+            $.each(i, function(e, t) {
+              n += '<span class="novacancy on">' + t + "</span>";
+            });
+          } else {
+            n += r.outerHTML;
+          }
+        });
+        return n;
+      };
+      t.prototype.arrayMake = function() {
+        var t = this._el;
+        var n = this._settings;
+        var r = this._items;
+        var i = r.length;
+        var s = this.randomArray(i);
+        var o;
+        var u;
+        var a = n.off;
+        var f = n.blink;
+        var l = this;
+        a = Math.min(a, i);
+        a = Math.max(0, a);
+        u = s.splice(0, a);
+        $.each(u, function(t, n) {
+          l.off($(r[n]));
+        });
+        f = f === 0 ? i : f;
+        f = Math.min(f, i - a);
+        f = Math.max(0, f);
+        o = s.splice(0, f);
+        return o;
+      };
+      t.prototype.randomArray = function(e) {
+        var t = [];
+        for (var n = 0; n < e; ++n) t[n] = n;
+        for (var r = 0; r < e; ++r) {
+          var i = parseInt(Math.random() * e, 10);
+          var s = t[i];
+          t[i] = t[r];
+          t[r] = s;
+        }
+        return t;
+      };
+      t.prototype.loop = function() {
+        if (!this._powerOn) return;
+        var e = this._el;
+        var t = this._settings;
+        var n = this._blinkArr;
+        var r = this._items;
+        if (n.length === 0) return;
+        var i = n[this.rand(0, n.length - 1)];
+        var s = $(r[i]);
+        if (!s[0].blinking) this.blink(s);
+        var o = this;
+        this._loopTimeout = setTimeout(function() {
+          o.loop();
+        }, this.rand(t.loopMin, t.loopMax));
+      };
+      t.prototype.blinkOn = function() {
+        if (!this._powerOn) {
+          var e = this._settings;
+          var t = this;
+          this._powerOn = true;
+          this._loopTimeout = setTimeout(function() {
+            t.loop();
+          }, this.rand(e.loopMin, e.loopMax));
+        }
+      };
+      t.prototype.blinkOff = function() {
+        if (this._powerOn) {
+          this._powerOn = false;
+          clearTimeout(this._loopTimeout);
+        }
+      };
+      t.prototype.bindEvent = function() {
+        var e = this._el;
+        var t = this;
+        e.on("blinkOn", function() {
+          t.blinkOn();
+        });
+        e.on("blinkOff", function() {
+          t.blinkOff();
+        });
+      };
+      $.fn.novacancy = function(n) {
+        return $.each(this, function(e, i) {
+          new t(this, $.extend({
+            reblinkProbability: 1 / 3,
+            blinkMin: 100,
+            blinkMax: 500,
+            loopMin: 500,
+            loopMax: 2000,
+            color: "orange",
+            glow: ["0 0 80px orange", "0 0 30px red", "0 0 6px yellow"],
+            off: 0,
+            blink: 0,
+            autoOn: true
+          }, n));
+        });
+      };
+    })(jQuery);
 
-    const starGeometry = new THREE.BufferGeometry();
-    const starCount = 10000;
-    const starPositions = new Float32Array(starCount * 3);
+    $(document).ready(() => {
+      $('#error').novacancy({
+        reblinkProbability: 0.1,
+        blinkMin: 200,
+        blinkMax: 600,
+        loopMin: 8000,
+        loopMax: 10000,
+        color: '#ffffff',
+        glow: ['0 0 80px #ffffff', '0 0 30px #008000', '0 0 6px #0000ff']
+      });
 
-    for (let i = 0; i < starCount * 3; i++) {
-      starPositions[i] = (Math.random() - 0.5) * 2000;
-    }
-
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
-
-    const ambientLight = new THREE.AmbientLight(0x404040, 2);
-    scene.add(ambientLight);
-
-    camera.position.z = 5;
-
-    const mouse = { x: 0, y: 0 };
-    document.addEventListener('mousemove', (event) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
-
-    document.addEventListener('scroll', () => {
-      camera.position.z += window.scrollY * 0.001;
-    });
-
-    function animate() {
-      stars.rotation.x += 0.0005;
-      stars.rotation.y += 0.0005;
-
-      camera.position.x += (mouse.x - camera.position.x) * 0.05;
-      camera.position.y += (-mouse.y - camera.position.y) * 0.05;
-
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
+      $('#code').novacancy({
+        blink: 1,
+        off: 1,
+        color: 'Red',
+        glow: ['0 0 80px Red', '0 0 30px FireBrick', '0 0 6px DarkRed']
+      });
     });
   </script>
 </body>
