@@ -1,5 +1,5 @@
 use axum::response::Html;
-use axum::{body, routing::*, Router};
+use axum::{routing::*, Router};
 use chrono::Utc;
 use maud::Markup;
 use std::net::SocketAddr;
@@ -19,7 +19,7 @@ async fn main() {
 }
 async fn root() -> Html<String> {
     outer_template(maud::html! {
-        h3."text-4xl mb-4" { "OuTiS92" }
+        h3 class="text-4xl mb-4 font-bold animate-pulse" { "OuTiS92" }
 
     })
 }
