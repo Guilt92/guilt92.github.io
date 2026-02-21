@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "title": "Getting started with a minimal dev blog",
+      "slug": "getting-started-minimal-blog",
+      "date": "2025-12-01",
+      "excerpt": "How to structure a minimal, code-first blog for notes and tutorials.",
+      "category": "meta",
+      "tags": ["static","notes"],
+      "file": "content/posts/getting-started-minimal-blog.md"
+    },
+    {
+      "title": "Tooling: fast local workflows",
+      "slug": "tooling-fast-local-workflows",
+      "date": "2025-11-15",
+      "excerpt": "A short guide on setting up fast iteration loops for development.",
+      "category": "tooling",
+      "tags": ["dev","workflow","rust"],
+      "file": "content/posts/tooling-fast-local-workflows.md"
+    }
+  ]
+}
