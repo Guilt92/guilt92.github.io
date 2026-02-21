@@ -5,14 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
     <meta name="description" content="{{ .Site.Params.description }}">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+    <meta property="og:title" content="{{ .Title }}">
+    <meta property="og:description" content="{{ .Site.Params.description }}">
+    <meta property="og:url" content="{{ .Permalink }}">
     <link rel="stylesheet" href="/css/style.css">
-    {{ if .IsHome }}{{/* include prism css from CDN for client highlighting fallback */}}{{ end }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" crossorigin="anonymous">
   </head>
   <body>
     {{ partial "header.html" . }}
+    <div id="progress" aria-hidden="true" style="position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),#7af5d0);z-index:60"></div>
     <main class="container">{{ block "main" . }}{{ end }}</main>
     {{ partial "footer.html" . }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
     <script src="/js/search.js"></script>
+    <script src="/js/progress.js"></script>
   </body>
 </html>

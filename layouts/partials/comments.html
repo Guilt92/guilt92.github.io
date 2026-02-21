@@ -1,0 +1,8 @@
+{{/*
+  Utterances comments. To enable, set .Site.Params.utterancesRepo in config.toml to "owner/repo"
+*/}}
+{{ if .Site.Params.utterancesRepo }}
+  <section id="comments" class="card">
+    <script src="https://utteranc.es/client.js" repo="{{ .Site.Params.utterancesRepo }}" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async></script>
+  </section>
+{{ end }}
