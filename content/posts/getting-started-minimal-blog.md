@@ -1,4 +1,28 @@
 ---
+title: "Getting started with a minimal dev blog"
+date: 2025-12-01
+categories: ["meta"]
+tags: ["static","notes"]
+featured: true
+draft: false
+---
+
+This example post shows how to keep a simple developer-focused blog that is easy to manage.
+
+Highlights:
+
+- Minimal static layout
+- Markdown-first posts
+- Client-side search and filtering
+
+Code example:
+
+```rust
+fn hello() {
+    println!("Hello, dev world!");
+}
+```
+---
 title: Getting started with a minimal dev blog
 ---
 

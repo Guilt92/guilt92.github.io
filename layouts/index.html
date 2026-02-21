@@ -1,0 +1,54 @@
+{{ define "main" }}
+  <section class="hero">
+    <div class="hero-inner container">
+      <div>
+        <h1>{{ .Site.Params.description }}</h1>
+        <p class="lead">Developer-focused notes, tutorials, and experiments.</p>
+      </div>
+      <div class="hero-feature">
+        {{ with first 1 (where .Site.RegularPages "Params.featured" true) }}
+          {{ $p := index . 0 }}
+          <a class="post-card" href="{{ $p.RelPermalink }}">
+            <div class="meta">{{ $p.Date.Format "2006-01-02" }} • {{ index $p.Params.categories 0 }}</div>
+            <h3>{{ $p.Title }}</h3>
+            <p class="excerpt">{{ $p.Params.excerpt }}</p>
+          </a>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  <section class="main-grid container">
+    <div class="main-col">
+      <div class="listing-grid">
+        {{ range .Site.RegularPages.ByDate.Reverse }}
+          <article class="post-card">
+            <a href="{{ .RelPermalink }}"><div class="meta">{{ .Date.Format "2006-01-02" }} • {{ index .Params.categories 0 }}</div>
+            <h3>{{ .Title }}</h3>
+            <p class="excerpt">{{ .Params.excerpt }}</p></a>
+          </article>
+        {{ end }}
+      </div>
+    </div>
+
+    <aside class="side-col">
+      <div class="card">
+        <h5>Categories</h5>
+        <ul>
+          {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+            <li><a href="/categories/{{ $name | urlize }}/">{{ $name }} ({{ len $taxonomy }})</a></li>
+          {{ end }}
+        </ul>
+      </div>
+
+      <div class="card">
+        <h5>Tags</h5>
+        <div class="tag-cloud">
+          {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
+            <a class="tag" href="/tags/{{ $name | urlize }}/">{{ $name }}</a>
+          {{ end }}
+        </div>
+      </div>
+    </aside>
+  </section>
+{{ end }}
