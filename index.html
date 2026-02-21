@@ -3,41 +3,69 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dev Notes — A Minimal Tech Blog</title>
+    <title>Dev Notes — A Modern Developer Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" crossorigin="anonymous">
+    <meta name="description" content="Developer notes, tutorials, and technical deep-dives.">
   </head>
   <body>
-    <header class="site-header">
-      <a class="logo" href="#/">Dev Notes</a>
-      <div class="search-wrap">
-        <input id="search" placeholder="Search posts, tags, categories..." aria-label="Search posts">
+    <nav class="topbar">
+      <div class="container nav-inner">
+        <a class="brand" href="#/">DevNotes</a>
+        <ul class="nav-links">
+          <li><a href="#/">Home</a></li>
+          <li><a href="#/categories">Categories</a></li>
+          <li><a href="#/about">About</a></li>
+        </ul>
+        <div class="nav-actions">
+          <input id="search" class="search-input" placeholder="Search posts, tags..." aria-label="Search posts">
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h1>Concise, practical developer notes and tutorials</h1>
+          <p class="lead">Deep-dives, tooling tips, and clean code examples for engineers.</p>
+        </div>
+        <div id="hero-feature" class="hero-feature"></div>
       </div>
     </header>
 
-    <div class="layout">
-      <aside class="sidebar">
-        <section class="about">
-          <h3>About</h3>
-          <p>Developer-focused notes, tutorials, and experiments. Code-first, minimal UI.</p>
+    <main class="container main-grid">
+      <section class="main-col">
+        <div id="listing"></div>
+      </section>
+
+      <aside class="side-col">
+        <section class="card author-card">
+          <div class="avatar" aria-hidden="true">DN</div>
+          <div>
+            <h4>DevNotes</h4>
+            <p class="muted">Personal notes on development, tooling, and systems design.</p>
+          </div>
         </section>
 
-        <section class="filters">
-          <h4>Categories</h4>
+        <section class="card">
+          <h5>Categories</h5>
           <ul id="categories"></ul>
+        </section>
 
-          <h4>Tags</h4>
-          <ul id="tags" class="tags"></ul>
+        <section class="card">
+          <h5>Tags</h5>
+          <div id="tags" class="tag-cloud"></div>
+        </section>
+
+        <section class="card">
+          <h5>Recent posts</h5>
+          <ul id="recent"></ul>
         </section>
       </aside>
+    </main>
 
-      <main class="content">
-        <div id="listing"></div>
-        <article id="post" class="post hidden"></article>
-      </main>
-    </div>
-
-    <footer class="site-footer">© <span id="year"></span> Dev Notes — Built for developers</footer>
+    <footer class="site-footer container">© <span id="year"></span> DevNotes — Built for developers.</footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.0.2/marked.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" crossorigin="anonymous"></script>
