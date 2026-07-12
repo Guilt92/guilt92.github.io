@@ -1,8 +1,0 @@
-{{ define "main" }}
-  <article class="card">
-    <h1>{{ .Title }}</h1>
-    <div class="meta">{{ .Date.Format "2006-01-02" }} • {{ with .Params.categories }}{{ index . 0 }}{{ end }}</div>
-    <div class="post-body">{{ .Content }}</div>
-    <div class="post-tags">{{ range .Params.tags }}<a class="tag" href="/tags/{{ . | urlize }}/">{{ . }}</a> {{ end }}</div>
-  </article>
-{{ end }}

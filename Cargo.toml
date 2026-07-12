@@ -1,15 +1,34 @@
 [package]
-name = "t"
+name = "devnotes-site"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+crate-type = ["cdylib"]
+
 [dependencies]
-
-axum = "0.8.1"
-chrono = "0.4.39"
-hyper = "1.5.2"
-maud = "0.26.0"
-tokio = { version = "1.43.0", features = ["full"] }
-tracing = "0.1.41"
-tracing-subscriber = "0.3.19"
-
+leptos = { version = "0.8.20", features = ["csr"] }
+leptos_router = "0.8.13"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "Document",
+    "Element",
+    "HtmlElement",
+    "HtmlInputElement",
+    "Event",
+    "EventTarget",
+    "Window",
+    "Location",
+    "Storage",
+    "MediaQueryList",
+    "console",
+    "Node",
+    "HtmlCollection",
+    "CssStyleDeclaration",
+] }
+js-sys = "0.3"
+gloo-net = "0.6"
+gloo-timers = "0.3"
