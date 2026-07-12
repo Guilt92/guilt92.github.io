@@ -1,11 +1,14 @@
 use leptos::prelude::*;
 use leptos::either::Either;
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::JsCast;
 use web_sys::window;
 
-// ============================================
-// Blog Post Data
-// ============================================
+#[wasm_bindgen(start)]
+pub fn main() {
+    console_error_panic_hook::set_once();
+    mount_to_body(App);
+}
 
 #[derive(Clone, Debug, PartialEq)]
 struct BlogPost {
@@ -1050,13 +1053,4 @@ fn ScrollTop() -> impl IntoView {
             <i class="fas fa-angle-up"></i>
         </button>
     }
-}
-
-// ============================================
-// Entry Point
-// ============================================
-
-#[wasm_bindgen(start)]
-pub fn main() {
-    leptos::mount::mount_to_body(App);
 }
