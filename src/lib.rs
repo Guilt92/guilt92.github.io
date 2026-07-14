@@ -1,5 +1,5 @@
-use leptos::prelude::*;
 use leptos::either::Either;
+use leptos::prelude::*;
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsCast;
 use web_sys::window;
@@ -99,7 +99,7 @@ fn all_posts() -> Vec<BlogPost> {
 }
 
 // ============================================
-// Pure Rust String Helpers
+// Markdown to HTML Renderer
 // ============================================
 
 fn escape_html(s: &str) -> String {
@@ -109,43 +109,41 @@ fn escape_html(s: &str) -> String {
         .replace('"', "&quot;")
 }
 
-// ============================================
-// Markdown to HTML Renderer
-// ============================================
-
 fn render_inline(text: &str) -> String {
     let mut result = text.to_string();
 
-    // Inline code first (protect from other transforms)
     result = simple_regex_replace(&result, "`([^`]+)`", |caps| {
         format!("<code>{}</code>", &caps[1])
     });
 
-    // Images
     result = simple_regex_replace(&result, r"!\[([^\]]*)\]\(([^)]+)\)", |caps| {
-        format!("<img src=\"{}\" alt=\"{}\" loading=\"lazy\">", &caps[2], &caps[1])
+        format!(
+            "<img src=\"{}\" alt=\"{}\" loading=\"lazy\">",
+            &caps[2], &caps[1]
+        )
     });
 
-    // Links
     result = simple_regex_replace(&result, r"\[([^\]]+)\]\(([^)]+)\)", |caps| {
-        format!("<a href=\"{}\" target=\"_blank\" rel=\"noopener\">{}</a>", &caps[2], &caps[1])
+        format!(
+            "<a href=\"{}\" target=\"_blank\" rel=\"noopener\">{}</a>",
+            &caps[2], &caps[1]
+        )
     });
 
-    // Bold (**text**)
     result = simple_regex_replace(&result, r"\*\*([^*]+)\*\*", |caps| {
         format!("<strong>{}</strong>", &caps[1])
     });
 
-    // Italic (*text*) — only single asterisks
     result = simple_regex_replace_italic(&result);
 
     result
 }
 
-/// Simple regex replacement with capture groups (no external regex crate needed)
-fn simple_regex_replace(input: &str, _pattern: &str, f: impl Fn(Vec<&str>) -> String) -> String {
-    // We implement a small subset: patterns with () groups
-    // This is a simplified approach that handles common markdown patterns
+fn simple_regex_replace(
+    input: &str,
+    _pattern: &str,
+    f: impl Fn(Vec<&str>) -> String,
+) -> String {
     match _pattern {
         "`([^`]+)`" => {
             let mut out = String::new();
@@ -154,8 +152,8 @@ fn simple_regex_replace(input: &str, _pattern: &str, f: impl Fn(Vec<&str>) -> St
             let mut i = 0;
             while i < len {
                 if chars[i] == '`' {
-                    if let Some(end) = chars[i+1..].iter().position(|&c| c == '`') {
-                        let content: String = chars[i+1..i+1+end].iter().collect();
+                    if let Some(end) = chars[i + 1..].iter().position(|&c| c == '`') {
+                        let content: String = chars[i + 1..i + 1 + end].iter().collect();
                         out.push_str(&f(vec![&content]));
                         i = i + 2 + end;
                         continue;
@@ -173,18 +171,18 @@ fn simple_regex_replace(input: &str, _pattern: &str, f: impl Fn(Vec<&str>) -> St
             while let Some(bang_pos) = s[pos..].find("![") {
                 let abs_bang = pos + bang_pos;
                 out.push_str(&s[pos..abs_bang]);
-                if let Some(close_bracket) = s[abs_bang+2..].find(']') {
-                    let alt = &s[abs_bang+2..abs_bang+2+close_bracket];
-                    let rest = &s[abs_bang+2+close_bracket+1..];
+                if let Some(close_bracket) = s[abs_bang + 2..].find(']') {
+                    let alt = &s[abs_bang + 2..abs_bang + 2 + close_bracket];
+                    let rest = &s[abs_bang + 2 + close_bracket + 1..];
                     if rest.starts_with('(') {
                         if let Some(close_paren) = rest[1..].find(')') {
-                            let url = &rest[1..1+close_paren];
+                            let url = &rest[1..1 + close_paren];
                             out.push_str(&f(vec![alt, url]));
                             pos = abs_bang + 2 + close_bracket + 1 + 1 + close_paren + 1;
                             continue;
                         }
                     }
-                    out.push_str(&s[abs_bang..abs_bang+2+close_bracket+1]);
+                    out.push_str(&s[abs_bang..abs_bang + 2 + close_bracket + 1]);
                     pos = abs_bang + 2 + close_bracket + 1;
                 } else {
                     out.push_str(&s[abs_bang..]);
@@ -200,25 +198,25 @@ fn simple_regex_replace(input: &str, _pattern: &str, f: impl Fn(Vec<&str>) -> St
             let mut pos = 0;
             while let Some(bracket_pos) = s[pos..].find('[') {
                 let abs_bracket = pos + bracket_pos;
-                // Make sure it's not preceded by '!'
                 if abs_bracket > 0 && s.as_bytes()[abs_bracket - 1] == b'!' {
-                    out.push_str(&s[pos..abs_bracket+1]);
+                    out.push_str(&s[pos..abs_bracket + 1]);
                     pos = abs_bracket + 1;
                     continue;
                 }
                 out.push_str(&s[pos..abs_bracket]);
-                if let Some(close_bracket) = s[abs_bracket+1..].find(']') {
-                    let text = &s[abs_bracket+1..abs_bracket+1+close_bracket];
-                    let rest = &s[abs_bracket+1+close_bracket+1..];
+                if let Some(close_bracket) = s[abs_bracket + 1..].find(']') {
+                    let text = &s[abs_bracket + 1..abs_bracket + 1 + close_bracket];
+                    let rest = &s[abs_bracket + 1 + close_bracket + 1..];
                     if rest.starts_with('(') {
                         if let Some(close_paren) = rest[1..].find(')') {
-                            let url = &rest[1..1+close_paren];
+                            let url = &rest[1..1 + close_paren];
                             out.push_str(&f(vec![text, url]));
-                            pos = abs_bracket + 1 + close_bracket + 1 + 1 + close_paren + 1;
+                            pos =
+                                abs_bracket + 1 + close_bracket + 1 + 1 + close_paren + 1;
                             continue;
                         }
                     }
-                    out.push_str(&s[abs_bracket..abs_bracket+1+close_bracket+1]);
+                    out.push_str(&s[abs_bracket..abs_bracket + 1 + close_bracket + 1]);
                     pos = abs_bracket + 1 + close_bracket + 1;
                 } else {
                     out.push_str(&s[abs_bracket..]);
@@ -235,8 +233,8 @@ fn simple_regex_replace(input: &str, _pattern: &str, f: impl Fn(Vec<&str>) -> St
             while let Some(star_pos) = s[pos..].find("**") {
                 let abs_star = pos + star_pos;
                 out.push_str(&s[pos..abs_star]);
-                if let Some(close_star) = s[abs_star+2..].find("**") {
-                    let content = &s[abs_star+2..abs_star+2+close_star];
+                if let Some(close_star) = s[abs_star + 2..].find("**") {
+                    let content = &s[abs_star + 2..abs_star + 2 + close_star];
                     out.push_str(&f(vec![content]));
                     pos = abs_star + 2 + close_star + 2;
                 } else {
@@ -257,24 +255,20 @@ fn simple_regex_replace_italic(input: &str) -> String {
     let len = chars.len();
     let mut i = 0;
     while i < len {
-        if chars[i] == '*' && (i == 0 || chars[i-1] != '*') {
-            // Look for closing single asterisk (not double)
-            if let Some(star_end) = chars[i+1..].iter().position(|&c| c == '*') {
+        if chars[i] == '*' && (i == 0 || chars[i - 1] != '*') {
+            if let Some(star_end) = chars[i + 1..].iter().position(|&c| c == '*') {
                 let abs_end = i + 1 + star_end;
-                // Check it's not a double asterisk
                 if abs_end + 1 < len && chars[abs_end + 1] == '*' {
-                    // It's part of **, skip
                     out.push(chars[i]);
                     i += 1;
                     continue;
                 }
-                // Check the char before closing * is not *
                 if star_end > 0 && chars[i + star_end] == '*' {
                     out.push(chars[i]);
                     i += 1;
                     continue;
                 }
-                let content: String = chars[i+1..abs_end].iter().collect();
+                let content: String = chars[i + 1..abs_end].iter().collect();
                 if !content.is_empty() {
                     out.push_str(&format!("<em>{}</em>", content));
                     i = abs_end + 1;
@@ -326,6 +320,7 @@ fn render_markdown_with_highlighting(md: &str) -> String {
 
         let trimmed = line.trim();
         if trimmed.is_empty() {
+            html.push_str("<p>&nbsp;</p>\n");
             continue;
         }
 
@@ -340,11 +335,13 @@ fn render_markdown_with_highlighting(md: &str) -> String {
         } else if trimmed == "---" || trimmed == "***" {
             html.push_str("<hr>\n");
         } else if let Some(rest) = trimmed.strip_prefix("> ") {
-            html.push_str(&format!("<blockquote>{}</blockquote>\n", render_inline(rest)));
+            html.push_str(&format!(
+                "<blockquote>{}</blockquote>\n",
+                render_inline(rest)
+            ));
         } else if trimmed.starts_with("- ") || trimmed.starts_with("* ") {
             html.push_str("<ul>\n");
-            let prefix_len = if trimmed.starts_with("- ") { 2 } else { 2 };
-            let first = &trimmed[prefix_len..];
+            let first = &trimmed[2..];
             html.push_str(&format!("<li>{}</li>\n", render_inline(first)));
             while line_idx < lines.len() {
                 let next = lines[line_idx].trim();
@@ -372,24 +369,27 @@ fn render_markdown_with_highlighting(md: &str) -> String {
     html
 }
 
-// ============================================
-// Basic Syntax Highlighting
-// ============================================
-
 fn highlight_code(code: &str, lang: &str) -> String {
     let escaped = escape_html(code);
     match lang {
-        "rust" | "rs" => highlight_keywords(&escaped, &[
-            "fn", "let", "mut", "pub", "use", "mod", "struct", "enum", "impl", "trait",
-            "where", "match", "if", "else", "for", "while", "loop", "return", "async",
-            "await", "move", "self", "Self", "super", "crate", "const", "static", "type",
-            "ref", "as", "in", "dyn", "unsafe", "extern", "true", "false",
-        ]),
+        "rust" | "rs" => highlight_keywords(
+            &escaped,
+            &[
+                "fn", "let", "mut", "pub", "use", "mod", "struct", "enum", "impl",
+                "trait", "where", "match", "if", "else", "for", "while", "loop",
+                "return", "async", "await", "move", "self", "Self", "super", "crate",
+                "const", "static", "type", "ref", "as", "in", "dyn", "unsafe", "extern",
+                "true", "false",
+            ],
+        ),
         "toml" => highlight_keywords(&escaped, &["true", "false"]),
-        "bash" | "sh" | "shell" => highlight_keywords(&escaped, &[
-            "echo", "cd", "ls", "mkdir", "cargo", "git", "npm", "curl", "sudo",
-            "rustup", "trunk", "cat", "grep", "sed", "awk",
-        ]),
+        "bash" | "sh" | "shell" => highlight_keywords(
+            &escaped,
+            &[
+                "echo", "cd", "ls", "mkdir", "cargo", "git", "npm", "curl", "sudo",
+                "rustup", "trunk", "cat",
+            ],
+        ),
         "json" => highlight_keywords(&escaped, &["true", "false", "null"]),
         "yaml" | "yml" => highlight_keywords(&escaped, &["true", "false", "null"]),
         "html" | "css" => highlight_keywords(&escaped, &[]),
@@ -400,14 +400,12 @@ fn highlight_code(code: &str, lang: &str) -> String {
 fn highlight_keywords(code: &str, keywords: &[&str]) -> String {
     let mut result = code.to_string();
 
-    // Highlight keywords
     for kw in keywords {
         let word_boundary = format!(" {} ", kw);
         let replacement = format!(" <span class=\"token-keyword\">{}</span> ", kw);
         result = result.replace(&word_boundary, &replacement);
     }
 
-    // Highlight strings
     let mut new_result = String::new();
     let chars: Vec<char> = result.chars().collect();
     let len = chars.len();
@@ -445,13 +443,14 @@ fn highlight_keywords(code: &str, keywords: &[&str]) -> String {
 
     result = new_result;
 
-    // Highlight numbers
     let mut num_result = String::new();
     let chars: Vec<char> = result.chars().collect();
     let len = chars.len();
     let mut i = 0;
     while i < len {
-        if chars[i].is_ascii_digit() && (i == 0 || !chars[i-1].is_alphanumeric()) {
+        if chars[i].is_ascii_digit()
+            && (i == 0 || !chars[i - 1].is_alphanumeric())
+        {
             num_result.push_str("<span class=\"token-number\">");
             while i < len && (chars[i].is_ascii_digit() || chars[i] == '_') {
                 num_result.push(chars[i]);
@@ -476,7 +475,6 @@ fn App() -> impl IntoView {
     let (sidebar_open, set_sidebar_open) = signal(false);
     let (dark_mode, set_dark_mode) = signal(true);
 
-    // Initialize dark mode from localStorage / system preference
     let init_dark = move || {
         if let Some(win) = window() {
             if let Ok(storage) = win.local_storage() {
@@ -506,10 +504,8 @@ fn App() -> impl IntoView {
                     );
                 }
                 if let Ok(Some(storage)) = win.local_storage() {
-                    let _ = storage.set_item(
-                        "theme",
-                        if is_dark { "dark" } else { "light" },
-                    );
+                    let _ =
+                        storage.set_item("theme", if is_dark { "dark" } else { "light" });
                 }
             }
         }
@@ -522,13 +518,16 @@ fn App() -> impl IntoView {
             .and_then(|w| w.location().hash().ok())
             .unwrap_or_default();
         let h = hash.trim_start_matches('#').trim_start_matches('/');
-        if h.is_empty() { "/".to_string() } else { format!("/{}", h) }
+        if h.is_empty() {
+            "/".to_string()
+        } else {
+            format!("/{}", h)
+        }
     };
 
     let (route_read, route_write) = signal(parse_hash());
     let set_route = route_write;
 
-    // Keep the interval alive for the component lifetime
     let _route_interval;
     {
         let set_route = set_route;
@@ -542,10 +541,9 @@ fn App() -> impl IntoView {
         });
     }
 
-    let toggle_theme = move |_| {
-        let new_val = !dark_mode.get();
-        set_dark_mode.set(new_val);
-        apply_theme(new_val);
+    let toggle_dark = move |is_dark: bool| {
+        set_dark_mode.set(is_dark);
+        apply_theme(is_dark);
     };
 
     let toggle_sidebar = move |_| {
@@ -562,77 +560,80 @@ fn App() -> impl IntoView {
         <div class="app-layout">
             <div
                 class=move || {
-                    let open = sidebar_open.get();
-                    if open { "sidebar-overlay active" } else { "sidebar-overlay" }
+                    if sidebar_open.get() { "sidebar-overlay active" } else { "sidebar-overlay" }
                 }
                 on:click=close_sidebar
             />
 
             <aside class=move || {
-                let open = sidebar_open.get();
-                if open { "sidebar open" } else { "sidebar" }
+                if sidebar_open.get() { "sidebar open" } else { "sidebar" }
             }>
-                <div class="sidebar-header">
-                    <div class="avatar">"DN"</div>
-                    <div class="site-title">"DevNotes"</div>
-                    <div class="site-subtitle">"Systems programming, demystified."</div>
-                </div>
-                <nav class="sidebar-nav">
-                    <div class="nav-item">
-                        <a class=move || {
-                            let r = route_read.get();
-                            if r == "/" || r.is_empty() { "nav-link active" } else { "nav-link" }
-                        }
-                        href="#/"
-                        on:click=close_sidebar>
-                            <i class="fas fa-home"></i>
-                            <span>"HOME"</span>
-                        </a>
+                <div class="sidebar-inner">
+                    <div class="sidebar-header">
+                        <div class="avatar">"G"</div>
+                        <div class="site-title">"guilt92"</div>
+                        <div class="site-subtitle">"Low-level engineering, demystified."</div>
                     </div>
-                    <div class="nav-item">
-                        <a class=move || {
-                            let r = route_read.get();
-                            if r == "/about" { "nav-link active" } else { "nav-link" }
-                        }
-                        href="#/about"
-                        on:click=close_sidebar>
-                            <i class="fas fa-info-circle"></i>
-                            <span>"ABOUT"</span>
-                        </a>
+
+                    <nav class="sidebar-nav">
+                        <div class="nav-section-title">"Menu"</div>
+
+                        <NavItem route=route_read href="/".to_string() icon="fa-solid fa-house".to_string() label="Home".to_string() close=close_sidebar />
+                        <NavItem route=route_read href="/archives".to_string() icon="fa-solid fa-archive".to_string() label="Archives".to_string() close=close_sidebar />
+                        <NavItem route=route_read href="/categories".to_string() icon="fa-solid fa-folder-tree".to_string() label="Categories".to_string() close=close_sidebar />
+                        <NavItem route=route_read href="/tags".to_string() icon="fa-solid fa-tags".to_string() label="Tags".to_string() close=close_sidebar />
+                        <NavItem route=route_read href="/about".to_string() icon="fa-solid fa-circle-info".to_string() label="About".to_string() close=close_sidebar />
+                    </nav>
+
+                    <div class="sidebar-footer">
+                        <div class="social-links">
+                            <a href="https://github.com/guilt92" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://twitter.com/guilt92" target="_blank" rel="noopener" class="social-link" aria-label="Twitter">
+                                <i class="fab fa-x-twitter"></i>
+                            </a>
+                            <a href="mailto:guilt92@users.noreply.github.com" class="social-link" aria-label="Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                        <div class="theme-toggle-wrapper">
+                            <div class="theme-toggle">
+                                <button
+                                    class=move || {
+                                        if dark_mode.get() { "theme-toggle-btn active" } else { "theme-toggle-btn" }
+                                    }
+                                    on:click=move |_| toggle_dark(true)
+                                >
+                                    <i class="fas fa-moon"></i>
+                                </button>
+                                <button
+                                    class=move || {
+                                        if !dark_mode.get() { "theme-toggle-btn active" } else { "theme-toggle-btn" }
+                                    }
+                                    on:click=move |_| toggle_dark(false)
+                                >
+                                    <i class="fas fa-sun"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </nav>
-                <div class="sidebar-footer">
-                    <a href="https://github.com/guilt92" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://twitter.com/guilt92" target="_blank" rel="noopener" class="social-link" aria-label="Twitter">
-                        <i class="fab fa-x-twitter"></i>
-                    </a>
-                    <a href="mailto:guilt92@users.noreply.github.com" class="social-link" aria-label="Email">
-                        <i class="fas fa-envelope"></i>
-                    </a>
                 </div>
             </aside>
 
             <div class="main-wrapper">
                 <header class="topbar">
-                    <div class="topbar-left">
-                        <button class="sidebar-toggle" on:click=toggle_sidebar aria-label="Toggle sidebar">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <nav class="breadcrumb">
-                            <span>"Home"</span>
-                        </nav>
-                    </div>
-                    <div class="topbar-title">"DevNotes"</div>
-                    <div class="topbar-right">
-                        <SearchBox posts=posts.clone() />
-                        <button class="mode-toggle" on:click=toggle_theme aria-label="Toggle theme">
+                    <button class="sidebar-toggle" on:click=toggle_sidebar aria-label="Toggle sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="topbar-title">"guilt92"</div>
+                    <div class="topbar-actions">
+                        <button class="sidebar-toggle" on:click=move |_| toggle_dark(!dark_mode.get()) aria-label="Toggle theme">
                             {move || {
                                 if dark_mode.get() {
-                                    view! { <i class="fas fa-sun"></i> }.into_view()
+                                    view! { <i class="fas fa-sun"></i> }
                                 } else {
-                                    view! { <i class="fas fa-moon"></i> }.into_view()
+                                    view! { <i class="fas fa-moon"></i> }
                                 }
                             }}
                         </button>
@@ -642,28 +643,36 @@ fn App() -> impl IntoView {
                 <div class="content-area">
                     <div class="content-inner">
                         <main class="main-col">
-                            {{
-                                let posts_clone = posts.clone();
-                                move || {
-                                    let r = route_read.get();
-                                    let p = posts_clone.clone();
-                                    if r == "/about" {
-                                        Either::Left(view! { <AboutPage /> })
-                                    } else if r.starts_with("/post/") {
-                                        let slug = r.trim_start_matches("/post/").to_string();
-                                        Either::Right(Either::Left(view! { <PostPage slug=slug posts=p /> }))
-                                    } else {
-                                        Either::Right(Either::Right(view! { <HomePage posts=p /> }))
-                                    }
+                            {move || {
+                                let r = route_read.get();
+                                let p = posts.clone();
+                                if r == "/about" {
+                                    Either::Left(Either::Left(view! { <AboutPage /> }))
+                                } else if r == "/archives" {
+                                    Either::Left(Either::Right(view! { <ArchivesPage posts=p /> }))
+                                } else if r == "/categories" {
+                                    Either::Right(Either::Left(view! { <CategoriesPage posts=p /> }))
+                                } else if r == "/tags" {
+                                    Either::Right(Either::Right(Either::Left(view! { <TagsPage posts=p /> })))
+                                } else if r.starts_with("/post/") {
+                                    let slug = r.trim_start_matches("/post/").to_string();
+                                    Either::Right(Either::Right(Either::Right(Either::Left(view! { <PostPage slug=slug posts=p /> }))))
+                                } else {
+                                    Either::Right(Either::Right(Either::Right(Either::Right(view! { <HomePage posts=p _search_query=String::new() /> }))))
                                 }
                             }}
                         </main>
-                        <aside class="side-panel">
-                            <SidePanel posts=posts.clone() />
-                        </aside>
                     </div>
+
                     <footer class="site-footer">
-                        <p>"© 2025 DevNotes · Built with "<a href="https://github.com/leptos-rs/leptos" target="_blank">"Leptos"</a>" + Rust + WebAssembly"</p>
+                        <p>
+                            "© 2026 guilt92 · Built with "
+                            <a href="https://leptos.dev" target="_blank" rel="noopener">"Leptos"</a>
+                            " + "
+                            <a href="https://www.rust-lang.org" target="_blank" rel="noopener">"Rust"</a>
+                            " · "
+                            <a href="https://github.com/guilt92/guilt92.github.io" target="_blank" rel="noopener">"Source"</a>
+                        </p>
                     </footer>
                 </div>
             </div>
@@ -674,99 +683,42 @@ fn App() -> impl IntoView {
 }
 
 // ============================================
-// Search Box
+// NavItem
 // ============================================
 
 #[component]
-fn SearchBox(posts: Vec<BlogPost>) -> impl IntoView {
-    let (query, set_query) = signal(String::new());
-    let (show_results, set_show_results) = signal(false);
-
-    let on_input = move |ev: web_sys::Event| {
-        if let Some(target) = ev.target() {
-            if let Ok(input) = target.dyn_into::<web_sys::HtmlInputElement>() {
-                let val = input.value();
-                set_query.set(val.clone());
-                set_show_results.set(!val.is_empty());
-            }
+fn NavItem<F>(
+    route: ReadSignal<String>,
+    href: String,
+    icon: String,
+    label: String,
+    close: F,
+) -> impl IntoView
+where
+    F: Fn(web_sys::MouseEvent) + 'static,
+{
+    let href_clone = href.clone();
+    let is_active = move || {
+        let r = route.get();
+        if href_clone == "/" {
+            r == "/" || r.is_empty()
+        } else {
+            r == href_clone
         }
-    };
-
-    let on_focus = move |_| {
-        if !query.get().is_empty() {
-            set_show_results.set(true);
-        }
-    };
-
-    let on_blur = move |_| {
-        let _timeout = gloo_timers::callback::Timeout::new(200, move || {
-            set_show_results.set(false);
-        });
     };
 
     view! {
-        <div class="search-wrapper">
-            <i class="fas fa-search search-icon"></i>
-            <input
-                class="search-input"
-                type="search"
-                placeholder="Search posts..."
-                aria-label="Search posts"
-                prop:value=move || query.get()
-                on:input=on_input
-                on:focus=on_focus
-                on:blur=on_blur
-            />
-            <div class=move || {
-                let show = show_results.get();
-                if show { "search-results active" } else { "search-results" }
-            }>
-                {move || {
-                    let q = query.get().to_lowercase();
-                    let results: Vec<BlogPost> = if q.is_empty() {
-                        vec![]
-                    } else {
-                        posts.iter().filter(|p| {
-                            p.title.to_lowercase().contains(&q)
-                                || p.excerpt.to_lowercase().contains(&q)
-                                || p.tags.iter().any(|t| t.to_lowercase().contains(&q))
-                                || p.category.to_lowercase().contains(&q)
-                        }).cloned().collect()
-                    };
-                    let is_empty_and_queried = results.is_empty() && !q.is_empty();
-                    view! {
-                        <div>
-                            {if is_empty_and_queried {
-                                Either::Left::<_, leptos::prelude::View<_>>(view! { <div class="search-no-results">"No results found."</div> })
-                            } else {
-                                Either::Right(view! {
-                                    <div>
-                                        {results.into_iter().map(|p| {
-                                            let slug = p.slug.clone();
-                                            let title = p.title.clone();
-                                            let excerpt = p.excerpt.clone();
-                                            view! {
-                                                <div class="search-result-item"
-                                                    on:click=move |_| {
-                                                        if let Some(win) = window() {
-                                                            let _ = win.location().set_hash(&format!("/post/{}", slug));
-                                                        }
-                                                        set_query.set(String::new());
-                                                        set_show_results.set(false);
-                                                    }
-                                                >
-                                                    <div class="search-result-title">{title}</div>
-                                                    <div class="search-result-excerpt">{excerpt}</div>
-                                                </div>
-                                            }
-                                        }).collect::<Vec<_>>()}
-                                    </div>
-                                })
-                            }}
-                        </div>
-                    }
-                }}
-            </div>
+        <div class="nav-item">
+            <a
+                class=move || {
+                    if is_active() { "nav-link active" } else { "nav-link" }
+                }
+                href=format!("#{}", href)
+                on:click=close
+            >
+                <i class=icon></i>
+                <span>{label}</span>
+            </a>
         </div>
     }
 }
@@ -776,73 +728,247 @@ fn SearchBox(posts: Vec<BlogPost>) -> impl IntoView {
 // ============================================
 
 #[component]
-fn HomePage(posts: Vec<BlogPost>) -> impl IntoView {
+fn HomePage(posts: Vec<BlogPost>, _search_query: String) -> impl IntoView {
     let mut sorted = posts.clone();
     sorted.sort_by(|a, b| b.date.cmp(&a.date));
 
-    let featured = sorted.first().cloned();
+    let (query, set_query) = signal(String::new());
+
+    let filtered = move || {
+        let q = query.get().to_lowercase();
+        if q.is_empty() {
+            sorted.clone()
+        } else {
+            sorted
+                .iter()
+                .filter(|p| {
+                    p.title.to_lowercase().contains(&q)
+                        || p.excerpt.to_lowercase().contains(&q)
+                        || p.tags.iter().any(|t| t.to_lowercase().contains(&q))
+                        || p.category.to_lowercase().contains(&q)
+                })
+                .cloned()
+                .collect()
+        }
+    };
 
     view! {
         <div>
-            <section class="hero">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <h1>"Concise, practical developer notes"</h1>
-                        <p>"Deep-dives, tooling tips, and clean code examples for systems engineers."</p>
-                    </div>
-                    {featured.map(|p| {
-                        let slug = p.slug.clone();
-                        let title = p.title.clone();
-                        let category = p.category.clone();
-                        let date = p.date.clone();
-                        let excerpt = p.excerpt.clone();
-                        view! {
-                            <a class="hero-card" href=format!("#/post/{}", slug)>
-                                <div class="post-card-meta">
-                                    <span class="post-card-category">{category}</span>
-                                    <span>{date}</span>
-                                </div>
-                                <div class="post-card-title">{title}</div>
-                                <div class="post-card-excerpt">{excerpt}</div>
-                            </a>
+            <h1 class="page-heading">"guilt92"</h1>
+            <p class="page-subheading">
+                "Deep technical notes on systems programming, distributed systems, performance engineering, and software architecture."
+            </p>
+
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input
+                    class="search-input"
+                    type="search"
+                    placeholder="Search posts..."
+                    aria-label="Search posts"
+                    prop:value=move || query.get()
+                    on:input=move |ev| {
+                        if let Some(target) = ev.target() {
+                            if let Ok(input) = target.dyn_into::<web_sys::HtmlInputElement>() {
+                                set_query.set(input.value());
+                            }
                         }
-                    })}
-                </div>
-            </section>
+                    }
+                />
+            </div>
 
             <section class="post-list">
-                {sorted.into_iter().enumerate().map(|(i, post)| {
-                    let delay = match i % 3 {
-                        0 => "animate-in-delay-1",
-                        1 => "animate-in-delay-2",
-                        _ => "animate-in-delay-3",
-                    };
-                    let slug = post.slug.clone();
-                    let title = post.title.clone();
-                    let excerpt = post.excerpt.clone();
-                    let date = post.date.clone();
-                    let category = post.category.clone();
-                    let tags = post.tags.clone();
-                    let class_str = format!("post-card animate-in {}", delay);
+                {move || {
+                    let filtered = filtered();
+                    if filtered.is_empty() {
+                        Either::Left(view! {
+                            <div class="empty-state">
+                                <i class="fas fa-search"></i>
+                                <p>"No posts found matching your search."</p>
+                            </div>
+                        })
+                    } else {
+                        Either::Right(view! {
+                            {filtered.into_iter().enumerate().map(|(i, post)| {
+                                let delay = match i % 3 {
+                                    0 => "animate-in-delay-1",
+                                    1 => "animate-in-delay-2",
+                                    _ => "animate-in-delay-3",
+                                };
+                                let slug = post.slug.clone();
+                                let title = post.title.clone();
+                                let excerpt = post.excerpt.clone();
+                                let date = post.date.clone();
+                                let category = post.category.clone();
+                                let tags = post.tags.clone();
+                                let class_str = format!("post-card animate-in {}", delay);
+                                view! {
+                                    <a href=format!("#/post/{}", slug) class=class_str>
+                                        <div class="post-card-header">
+                                            <span class="post-card-category">{category}</span>
+                                            <span class="post-card-date"><i class="far fa-calendar"></i> {date}</span>
+                                        </div>
+                                        <h2 class="post-card-title">{title}</h2>
+                                        <p class="post-card-excerpt">{excerpt}</p>
+                                        <div class="post-card-tags">
+                                            {tags.into_iter().map(|t| {
+                                                view! { <span class="post-card-tag">"#" {t}</span> }
+                                            }).collect::<Vec<_>>()}
+                                        </div>
+                                    </a>
+                                }
+                            }).collect::<Vec<_>>()}
+                        })
+                    }
+                }}
+            </section>
+        </div>
+    }
+}
+
+// ============================================
+// Archives Page
+// ============================================
+
+#[component]
+fn ArchivesPage(posts: Vec<BlogPost>) -> impl IntoView {
+    let mut sorted = posts.clone();
+    sorted.sort_by(|a, b| b.date.cmp(&a.date));
+
+    let mut years: Vec<(String, Vec<BlogPost>)> = Vec::new();
+    for post in &sorted {
+        let year = if post.date.len() >= 4 {
+            post.date[..4].to_string()
+        } else {
+            "Unknown".to_string()
+        };
+        if let Some(last) = years.last_mut() {
+            if last.0 == year {
+                last.1.push(post.clone());
+                continue;
+            }
+        }
+        years.push((year, vec![post.clone()]));
+    }
+
+    view! {
+        <div class="archives-page animate-in">
+            <h1><i class="fas fa-archive"></i> "Archives"</h1>
+
+            {years.into_iter().map(|(year, year_posts)| {
+                view! {
+                    <div class="archive-year">
+                        <h2 class="archive-year-title">{year}</h2>
+                        <div class="archive-list">
+                            {year_posts.into_iter().map(|post| {
+                                let slug = post.slug.clone();
+                                let title = post.title.clone();
+                                let date = post.date.clone();
+                                let category = post.category.clone();
+                                view! {
+                                    <a href=format!("#/post/{}", slug) class="archive-item">
+                                        <span class="archive-date">{date}</span>
+                                        <span class="archive-title">{title}</span>
+                                        <span class="archive-category">{category}</span>
+                                    </a>
+                                }
+                            }).collect::<Vec<_>>()}
+                        </div>
+                    </div>
+                }
+            }).collect::<Vec<_>>()}
+        </div>
+    }
+}
+
+// ============================================
+// Categories Page
+// ============================================
+
+#[component]
+fn CategoriesPage(posts: Vec<BlogPost>) -> impl IntoView {
+    let mut categories: Vec<(String, Vec<BlogPost>)> = Vec::new();
+    for post in &posts {
+        if let Some(last) = categories.last_mut() {
+            if last.0 == post.category {
+                last.1.push(post.clone());
+                continue;
+            }
+        }
+        categories.push((post.category.clone(), vec![post.clone()]));
+    }
+    categories.sort_by(|a, b| b.1.len().cmp(&a.1.len()));
+
+    view! {
+        <div class="categories-page animate-in">
+            <h1><i class="fas fa-folder-tree"></i> "Categories"</h1>
+
+            {categories.into_iter().map(|(cat, cat_posts)| {
+                view! {
+                    <div class="category-group">
+                        <h2 class="category-title">
+                            <i class="fas fa-folder"></i>
+                            {cat.clone()}
+                            <span style="font-size:13px;color:var(--text-muted);font-weight:400;">
+                                ({cat_posts.len()})
+                            </span>
+                        </h2>
+                        <div class="archive-list">
+                            {cat_posts.into_iter().map(|post| {
+                                let slug = post.slug.clone();
+                                let title = post.title.clone();
+                                let date = post.date.clone();
+                                view! {
+                                    <a href=format!("#/post/{}", slug) class="archive-item">
+                                        <span class="archive-date">{date}</span>
+                                        <span class="archive-title">{title}</span>
+                                    </a>
+                                }
+                            }).collect::<Vec<_>>()}
+                        </div>
+                    </div>
+                }
+            }).collect::<Vec<_>>()}
+        </div>
+    }
+}
+
+// ============================================
+// Tags Page
+// ============================================
+
+#[component]
+fn TagsPage(posts: Vec<BlogPost>) -> impl IntoView {
+    let mut tag_counts: Vec<(String, usize)> = Vec::new();
+    let mut seen = std::collections::HashSet::new();
+    for post in &posts {
+        for tag in &post.tags {
+            if seen.insert(tag.clone()) {
+                let count = posts
+                    .iter()
+                    .filter(|p| p.tags.contains(tag))
+                    .count();
+                tag_counts.push((tag.clone(), count));
+            }
+        }
+    }
+    tag_counts.sort_by(|a, b| b.1.cmp(&a.1));
+
+    view! {
+        <div class="tags-page animate-in">
+            <h1><i class="fas fa-tags"></i> "Tags"</h1>
+
+            <div class="tag-cloud">
+                {tag_counts.into_iter().map(|(tag, count)| {
+                    let size = if count >= 4 { "1.1em" } else if count >= 3 { "1em" } else if count >= 2 { "0.95em" } else { "0.85em" };
                     view! {
-                        <article class=class_str>
-                            <a href=format!("#/post/{}", slug) style="text-decoration:none;color:inherit;">
-                                <div class="post-card-meta">
-                                    <span class="post-card-category">{category}</span>
-                                    <span><i class="far fa-calendar"></i>{date}</span>
-                                </div>
-                                <h2 class="post-card-title">{title}</h2>
-                                <p class="post-card-excerpt">{excerpt}</p>
-                                <div class="post-card-tags">
-                                    {tags.into_iter().map(|t| {
-                                        view! { <span class="tag">{t}</span> }
-                                    }).collect::<Vec<_>>()}
-                                </div>
-                            </a>
-                        </article>
+                        <span class="tag-item" style=format!("font-size:{}", size)>
+                            "#" {tag}
+                            <span class="tag-count">({count})</span>
+                        </span>
                     }
                 }).collect::<Vec<_>>()}
-            </section>
+            </div>
         </div>
     }
 }
@@ -856,7 +982,7 @@ fn PostPage(slug: String, posts: Vec<BlogPost>) -> impl IntoView {
     let post = posts.iter().find(|p| p.slug == slug).cloned();
 
     match post {
-        None => Either::Left::<_, leptos::prelude::View<_>>(view! {
+        None => Either::Left(view! {
             <div class="empty-state">
                 <i class="fas fa-file-alt"></i>
                 <p>"Post not found."</p>
@@ -876,10 +1002,13 @@ fn PostPage(slug: String, posts: Vec<BlogPost>) -> impl IntoView {
                     </a>
                     <article>
                         <header class="post-header">
-                            <h1 class="post-title">{p.title}</h1>
+                            <div class="post-card-header" style="margin-bottom:12px;">
+                                <span class="post-card-category">{p.category.clone()}</span>
+                            </div>
+                            <h1 class="post-title">{p.title.clone()}</h1>
                             <div class="post-meta">
-                                <span><i class="far fa-calendar"></i>{p.date}</span>
-                                <span><i class="far fa-folder"></i>{p.category}</span>
+                                <span><i class="far fa-calendar"></i>{p.date.clone()}</span>
+                                <span><i class="far fa-folder"></i>{p.category.clone()}</span>
                                 <span><i class="fas fa-tags"></i>{p.tags.join(", ")}</span>
                             </div>
                         </header>
@@ -899,21 +1028,21 @@ fn PostPage(slug: String, posts: Vec<BlogPost>) -> impl IntoView {
 fn AboutPage() -> impl IntoView {
     view! {
         <div class="about-page animate-in">
-            <h1>"About DevNotes"</h1>
+            <h1>"About"</h1>
             <div class="about-card">
                 <p>
-                    "A technical blog focused on deep-dive analysis of systems programming, distributed systems, "
-                    "software architecture, and developer tooling. Built entirely in Rust and compiled to WebAssembly."
+                    "A technical space focused on deep-dive analysis of systems programming, performance engineering, "
+                    "and software architecture. Built entirely in Rust and compiled to WebAssembly."
                 </p>
             </div>
 
-            <h2>"What I Write About"</h2>
+            <h2>"Focus Areas"</h2>
             <ul style="padding-left:20px;list-style:disc;">
                 <li style="margin-bottom:8px;color:var(--text-secondary);">"Rust language internals and advanced patterns"</li>
                 <li style="margin-bottom:8px;color:var(--text-secondary);">"WebAssembly and browser-level systems programming"</li>
                 <li style="margin-bottom:8px;color:var(--text-secondary);">"Concurrent and async programming architectures"</li>
                 <li style="margin-bottom:8px;color:var(--text-secondary);">"Performance engineering and optimization"</li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">"Developer tooling and workflow design"</li>
+                <li style="margin-bottom:8px;color:var(--text-secondary);">"Low-level systems and OS internals"</li>
             </ul>
 
             <h2>"Tech Stack"</h2>
@@ -947,76 +1076,6 @@ fn AboutPage() -> impl IntoView {
 }
 
 // ============================================
-// Side Panel
-// ============================================
-
-#[component]
-fn SidePanel(posts: Vec<BlogPost>) -> impl IntoView {
-    let mut sorted = posts.clone();
-    sorted.sort_by(|a, b| b.date.cmp(&a.date));
-
-    let all_tags: Vec<String> = {
-        let mut tags: Vec<String> = posts.iter().flat_map(|p| p.tags.clone()).collect();
-        tags.sort();
-        tags.dedup();
-        tags
-    };
-
-    let all_categories: Vec<String> = {
-        let mut cats: Vec<String> = posts.iter().map(|p| p.category.clone()).collect();
-        cats.sort();
-        cats.dedup();
-        cats
-    };
-
-    view! {
-        <section class="panel-section">
-            <h2 class="panel-heading">"Recently Updated"</h2>
-            <div class="panel-list">
-                {sorted.into_iter().take(5).map(|p| {
-                    let slug = p.slug.clone();
-                    let title = p.title.clone();
-                    view! {
-                        <div class="panel-list-item"
-                            on:click=move |_| {
-                                if let Some(win) = window() {
-                                    let _ = win.location().set_hash(&format!("/post/{}", slug));
-                                }
-                            }
-                        >
-                            {title}
-                        </div>
-                    }
-                }).collect::<Vec<_>>()}
-            </div>
-        </section>
-
-        <section class="panel-section">
-            <h2 class="panel-heading">"Categories"</h2>
-            <div class="panel-list">
-                {all_categories.into_iter().map(|cat| {
-                    view! {
-                        <div class="panel-list-item">
-                            <i class="far fa-folder" style="margin-right:6px;font-size:11px;"></i>
-                            {cat}
-                        </div>
-                    }
-                }).collect::<Vec<_>>()}
-            </div>
-        </section>
-
-        <section class="panel-section">
-            <h2 class="panel-heading">"Trending Tags"</h2>
-            <div class="tag-cloud">
-                {all_tags.into_iter().map(|t| {
-                    view! { <span class="tag">{t}</span> }
-                }).collect::<Vec<_>>()}
-            </div>
-        </section>
-    }
-}
-
-// ============================================
 // Scroll to Top
 // ============================================
 
@@ -1024,7 +1083,6 @@ fn SidePanel(posts: Vec<BlogPost>) -> impl IntoView {
 fn ScrollTop() -> impl IntoView {
     let (visible, set_visible) = signal(false);
 
-    // Keep interval alive for component lifetime
     let _scroll_interval;
     {
         _scroll_interval = gloo_timers::callback::Interval::new(200, move || {

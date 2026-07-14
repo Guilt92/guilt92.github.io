@@ -1,4 +1,4 @@
-# DevNotes
+# guilt92.github.io
 
 A technical blog built with Rust, Leptos, and WebAssembly. Deployed to GitHub Pages via Trunk.
 
@@ -7,8 +7,9 @@ A technical blog built with Rust, Leptos, and WebAssembly. Deployed to GitHub Pa
 - **Rust/WASM**: Full application logic in Rust, compiled to WebAssembly
 - **Leptos CSR**: Client-side rendered SPA with fine-grained reactivity
 - **Custom Markdown Renderer**: Pure Rust markdown-to-HTML with syntax highlighting
-- **Dark/Light Mode**: Automatic theme switching with system preference detection
+- **Dark/Light Mode**: Theme toggle with system preference detection
 - **Client-Side Search**: Real-time search across posts by title, tags, and category
+- **Archives, Categories & Tags Pages**: Organized content discovery
 - **Responsive Design**: Mobile-first layout with collapsible sidebar
 - **Hash-Based Routing**: SPA navigation without page reloads
 - **Scroll-to-Top**: Animated scroll button
@@ -19,9 +20,9 @@ A technical blog built with Rust, Leptos, and WebAssembly. Deployed to GitHub Pa
 |-----------|-----------|
 | Language | Rust |
 | Framework | Leptos 0.8 (CSR) |
-| Build Tool | Trunk 0.21 |
+| Build Tool | Trunk |
 | WASM Target | wasm32-unknown-unknown |
-| Styling | Custom CSS (no framework) |
+| Styling | Custom CSS |
 | Icons | Font Awesome 6 |
 | Fonts | Inter + JetBrains Mono |
 | Hosting | GitHub Pages |
@@ -47,6 +48,7 @@ Opens at `http://localhost:8080`.
 
 ```bash
 trunk build --release
+cp .nojekyll dist/
 ```
 
 Output goes to `dist/`.
@@ -66,6 +68,7 @@ guilt92.github.io/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml      # GitHub Actions CI/CD
+├── .nojekyll               # Disables Jekyll on GitHub Pages
 └── README.md
 ```
 
@@ -74,14 +77,16 @@ guilt92.github.io/
 1. Create a markdown file in `content/posts/your-post-slug.md`
 2. Add a new `BlogPost` entry in `src/lib.rs` in the `all_posts()` function
 3. Use `include_str!("../content/posts/your-post-slug.md")` for the content field
-4. Push to `main` — GitHub Actions auto-deploys
+4. Push to `main` — GitHub Actions auto-builds and deploys
 
 ## Deployment
 
 Every push to `main` triggers the GitHub Actions workflow which:
 1. Installs Rust + WASM target + Trunk
 2. Builds with `trunk build --release`
-3. Deploys `dist/` to GitHub Pages
+3. Deploys `dist/` to the `gh-pages` branch
+
+**Note:** GitHub Pages must be configured to serve from the `gh-pages` branch at the root (`/`). Go to Settings → Pages → Source: "Deploy from branch" → Branch: `gh-pages` / `/(root)`.
 
 ## License
 
