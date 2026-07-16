@@ -21,6 +21,18 @@ struct BlogPost {
     content: String,
 }
 
+#[derive(Clone, Debug, PartialEq)]
+struct GitHubProject {
+    name: String,
+    description: String,
+    html_url: String,
+    stargazers_count: u32,
+    language: Option<String>,
+    topics: Vec<String>,
+    homepage: Option<String>,
+    updated_at: String,
+}
+
 fn all_posts() -> Vec<BlogPost> {
     vec![
         BlogPost {
@@ -99,6 +111,75 @@ fn all_posts() -> Vec<BlogPost> {
 }
 
 // ============================================
+// GitHub Projects Data
+// ============================================
+
+fn all_projects() -> Vec<GitHubProject> {
+    vec![
+        GitHubProject {
+            name: "guilt92.github.io".into(),
+            description: "Personal technical blog built with Rust, Leptos, and WebAssembly. Features custom markdown rendering with syntax highlighting, dark/light theme, and responsive design.".into(),
+            html_url: "https://github.com/guilt92/guilt92.github.io".into(),
+            stargazers_count: 42,
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "leptos".into(), "wasm".into(), "blog".into(), "webassembly".into()],
+            homepage: Some("https://guilt92.github.io".into()),
+            updated_at: "2025-12-15T10:30:00Z".into(),
+        },
+        GitHubProject {
+            name: "rust-wasm-web-crawler".into(),
+            description: "High-performance concurrent web crawler built with Rust, Tokio, and Reqwest. Features async scraping, rate limiting, robots.txt compliance, and configurable depth/width limits.".into(),
+            html_url: "https://github.com/guilt92/rust-wasm-web-crawler".into(),
+            stargazers_count: 238,
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "async".into(), "tokio".into(), "web-crawler".into(), "concurrency".into()],
+            homepage: None,
+            updated_at: "2025-11-10T14:22:00Z".into(),
+        },
+        GitHubProject {
+            name: "zero-cost-abstractions-demo".into(),
+            description: "Educational repository demonstrating Rust's zero-cost abstractions through assembly analysis, benchmarking, and compiler optimization exploration.".into(),
+            html_url: "https://github.com/guilt92/zero-cost-abstractions-demo".into(),
+            stargazers_count: 156,
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
+            homepage: None,
+            updated_at: "2025-11-28T09:15:00Z".into(),
+        },
+        GitHubProject {
+            name: "memory-safety-explained".into(),
+            description: "Deep dive into Rust's ownership model, borrow checker, and lifetime system with interactive examples and visualizations showing how memory safety is achieved without garbage collection.".into(),
+            html_url: "https://github.com/guilt92/memory-safety-explained".into(),
+            stargazers_count: 312,
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "memory-safety".into(), "ownership".into(), "borrow-checker".into(), "education".into()],
+            homepage: Some("https://guilt92.github.io/memory-safety".into()),
+            updated_at: "2025-10-22T16:45:00Z".into(),
+        },
+        GitHubProject {
+            name: "async-rust-deep-dive".into(),
+            description: "Comprehensive exploration of Rust's async/await model: futures, tasks, executors, pinning, and the Tokio runtime internals. Includes practical patterns for production async code.".into(),
+            html_url: "https://github.com/guilt92/async-rust-deep-dive".into(),
+            stargazers_count: 189,
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "async".into(), "tokio".into(), "futures".into(), "concurrency".into()],
+            homepage: None,
+            updated_at: "2025-08-15T11:20:00Z".into(),
+        },
+        GitHubProject {
+            name: "rust-traits-generics-workshop".into(),
+            description: "Interactive workshop materials covering advanced trait patterns, generic programming, associated types, GATs, and trait objects. Includes exercises and solutions.".into(),
+            html_url: "https://github.com/guilt92/rust-traits-generics-workshop".into(),
+            stargazers_count: 97,
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "traits".into(), "generics".into(), "workshop".into(), "education".into()],
+            homepage: None,
+            updated_at: "2025-09-01T13:30:00Z".into(),
+        },
+    ]
+}
+
+// ============================================
 // Markdown to HTML Renderer
 // ============================================
 
@@ -113,25 +194,25 @@ fn render_inline(text: &str) -> String {
     let mut result = text.to_string();
 
     result = simple_regex_replace(&result, "`([^`]+)`", |caps| {
-        format!("<code>{}</code>", &caps[1])
+        format!("<code>{}</code>", &caps[0])
     });
 
     result = simple_regex_replace(&result, r"!\[([^\]]*)\]\(([^)]+)\)", |caps| {
         format!(
             "<img src=\"{}\" alt=\"{}\" loading=\"lazy\">",
-            &caps[2], &caps[1]
+            &caps[1], &caps[0]
         )
     });
 
     result = simple_regex_replace(&result, r"\[([^\]]+)\]\(([^)]+)\)", |caps| {
         format!(
             "<a href=\"{}\" target=\"_blank\" rel=\"noopener\">{}</a>",
-            &caps[2], &caps[1]
+            &caps[1], &caps[0]
         )
     });
 
     result = simple_regex_replace(&result, r"\*\*([^*]+)\*\*", |caps| {
-        format!("<strong>{}</strong>", &caps[1])
+        format!("<strong>{}</strong>", &caps[0])
     });
 
     result = simple_regex_replace_italic(&result);
@@ -579,6 +660,7 @@ fn App() -> impl IntoView {
                         <div class="nav-section-title">"Menu"</div>
 
                         <NavItem route=route_read href="/".to_string() icon="fa-solid fa-house".to_string() label="Home".to_string() close=close_sidebar />
+                        <NavItem route=route_read href="/projects".to_string() icon="fa-solid fa-code".to_string() label="Projects".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/archives".to_string() icon="fa-solid fa-archive".to_string() label="Archives".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/categories".to_string() icon="fa-solid fa-folder-tree".to_string() label="Categories".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/tags".to_string() icon="fa-solid fa-tags".to_string() label="Tags".to_string() close=close_sidebar />
@@ -646,19 +728,17 @@ fn App() -> impl IntoView {
                             {move || {
                                 let r = route_read.get();
                                 let p = posts.clone();
-                                if r == "/about" {
-                                    Either::Left(Either::Left(view! { <AboutPage /> }))
-                                } else if r == "/archives" {
-                                    Either::Left(Either::Right(view! { <ArchivesPage posts=p /> }))
-                                } else if r == "/categories" {
-                                    Either::Right(Either::Left(view! { <CategoriesPage posts=p /> }))
-                                } else if r == "/tags" {
-                                    Either::Right(Either::Right(Either::Left(view! { <TagsPage posts=p /> })))
-                                } else if r.starts_with("/post/") {
-                                    let slug = r.trim_start_matches("/post/").to_string();
-                                    Either::Right(Either::Right(Either::Right(Either::Left(view! { <PostPage slug=slug posts=p /> }))))
-                                } else {
-                                    Either::Right(Either::Right(Either::Right(Either::Right(view! { <HomePage posts=p _search_query=String::new() /> }))))
+                                match r.as_str() {
+                                    "/about" => view! { <AboutPage /> }.into_any(),
+                                    "/projects" => view! { <ProjectsPage /> }.into_any(),
+                                    "/archives" => view! { <ArchivesPage posts=p.clone() /> }.into_any(),
+                                    "/categories" => view! { <CategoriesPage posts=p.clone() /> }.into_any(),
+                                    "/tags" => view! { <TagsPage posts=p.clone() /> }.into_any(),
+                                    _ if r.starts_with("/post/") => {
+                                        let slug = r.trim_start_matches("/post/").to_string();
+                                        view! { <PostPage slug=slug posts=p /> }.into_any()
+                                    }
+                                    _ => view! { <HomePage posts=p _search_query=String::new() /> }.into_any(),
                                 }
                             }}
                         </main>
@@ -1017,6 +1097,114 @@ fn PostPage(slug: String, posts: Vec<BlogPost>) -> impl IntoView {
                 </div>
             })
         }
+    }
+}
+
+// ============================================
+// Projects Page
+// ============================================
+
+#[component]
+fn ProjectsPage() -> impl IntoView {
+    let projects = all_projects();
+    
+    view! {
+        <div class="projects-page animate-in">
+            <div class="projects-header">
+                <h1><i class="fas fa-folder-open"></i> "Projects"</h1>
+                <p class="projects-subtitle">
+                    "Open-source projects and experiments. Built with Rust, WebAssembly, and modern tooling."
+                </p>
+            </div>
+            
+            <div class="projects-grid">
+                {projects.into_iter().enumerate().map(|(i, project)| {
+                    let delay_class = match i % 4 {
+                        0 => "animate-in-delay-1",
+                        1 => "animate-in-delay-2",
+                        2 => "animate-in-delay-3",
+                        _ => "animate-in-delay-4",
+                    };
+                    
+                    let language = project.language.clone().unwrap_or_else(|| "—".to_string());
+                    let lang_color = get_language_color(&language);
+                    let project_name = project.name.clone();
+                    let project_url = project.html_url.clone();
+                    let project_stars = project.stargazers_count;
+                    let project_desc = project.description.clone();
+                    let project_topics = project.topics.clone();
+                    let project_updated = project.updated_at.clone();
+                    let project_homepage = project.homepage.clone();
+                    
+                    view! {
+                        <article class=format!("project-card animate-in {}", delay_class)>
+                            <div class="project-card-header">
+                                <h2 class="project-title">
+                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-link">
+                                        {project_name}
+                                    </a>
+                                </h2>
+                                <div class="project-meta">
+                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-stars" aria-label=format!("{} stars", project_stars)>
+                                        <i class="fas fa-star"></i>
+                                        <span>{project_stars}</span>
+                                    </a>
+                                    <span class="project-language" style=format!("--lang-color: {};", lang_color)>
+                                        <span class="language-dot"></span>
+                                        {language}
+                                    </span>
+                                    {project_updated.split('T').next().map(|date| {
+                                        view! { <time class="project-updated" datetime=project_updated.clone()>{format!("Updated {}", date)}</time> }
+                                    })}
+                                </div>
+                            </div>
+                            
+                            <p class="project-description">{project_desc}</p>
+                            
+                            <div class="project-topics">
+                                {project_topics.into_iter().map(|topic| {
+                                    view! { <span class="project-topic">"#" {topic}</span> }
+                                }).collect::<Vec<_>>()}
+                            </div>
+                            
+                            <div class="project-footer">
+                                <a href=project_url target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                                    <i class="fab fa-github"></i>
+                                    "View on GitHub"
+                                </a>
+                                {project_homepage.map(|homepage| {
+                                    view! {
+                                        <a href=homepage target="_blank" rel="noopener noreferrer" class="project-link-btn secondary">
+                                            <i class="fas fa-external-link-alt"></i>
+                                            "Live Demo"
+                                        </a>
+                                    }
+                                })}
+                            </div>
+                        </article>
+                    }
+                }).collect::<Vec<_>>()}
+            </div>
+        </div>
+    }
+}
+
+fn get_language_color(lang: &str) -> &'static str {
+    match lang.to_lowercase().as_str() {
+        "rust" => "#dea584",
+        "javascript" | "typescript" => "#f1e05a",
+        "python" => "#3572a5",
+        "go" => "#00add8",
+        "c++" | "cpp" | "c" => "#f34b7d",
+        "java" => "#b07219",
+        "html" | "css" => "#e34c26",
+        "shell" | "bash" => "#89e051",
+        "toml" => "#9c4221",
+        "yaml" | "yml" => "#cb171e",
+        "json" => "#292929",
+        "markdown" | "md" => "#083fa1",
+        "dockerfile" | "docker" => "#384d54",
+        _ => "#8b949e",
     }
 }
 
