@@ -1125,12 +1125,12 @@ fn ProjectsPage() -> impl IntoView {
     
     view! {
         <div class="projects-page animate-in">
-            <div class="projects-header">
+            <header class="projects-header">
                 <h1><i class="fas fa-folder-open"></i> "Projects"</h1>
                 <p class="projects-subtitle">
                     "Open-source projects and experiments. Built with Rust, WebAssembly, and modern tooling."
                 </p>
-            </div>
+            </header>
             
             <div class="projects-grid">
                 {projects.into_iter().enumerate().map(|(i, project)| {
@@ -1153,49 +1153,49 @@ fn ProjectsPage() -> impl IntoView {
                     
                     view! {
                         <article class=format!("project-card animate-in {}", delay_class)>
-                            <div class="project-card-header">
-                                <h2 class="project-title">
-                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-link">
+                            <header class="project-card-header">
+                                <h2 class="project-card-title">
+                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-card-link">
                                         {project_name}
                                     </a>
                                 </h2>
-                                <div class="project-meta">
-                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-stars" aria-label=format!("{} stars", project_stars)>
+                                <div class="project-card-meta">
+                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-card-stars" aria-label=format!("{} stars", project_stars)>
                                         <i class="fas fa-star"></i>
                                         <span>{project_stars}</span>
                                     </a>
-                                    <span class="project-language" style=format!("--lang-color: {};", lang_color)>
-                                        <span class="language-dot"></span>
+                                    <span class="project-card-language" style=format!("--lang-color: {};", lang_color)>
+                                        <span class="project-card-language-dot"></span>
                                         {language}
                                     </span>
                                     {project_updated.split('T').next().map(|date| {
-                                        view! { <time class="project-updated" datetime=project_updated.clone()>{format!("Updated {}", date)}</time> }
+                                        view! { <time class="project-card-updated" datetime=project_updated.clone()>{format!("Updated {}", date)}</time> }
                                     })}
                                 </div>
-                            </div>
+                            </header>
                             
-                            <p class="project-description">{project_desc}</p>
+                            <p class="project-card-description">{project_desc}</p>
                             
-                            <div class="project-topics">
+                            <div class="project-card-topics">
                                 {project_topics.into_iter().map(|topic| {
-                                    view! { <span class="project-topic">"#" {topic}</span> }
+                                    view! { <span class="project-card-topic">"#" {topic}</span> }
                                 }).collect::<Vec<_>>()}
                             </div>
                             
-                            <div class="project-footer">
-                                <a href=project_url target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                            <footer class="project-card-footer">
+                                <a href=project_url target="_blank" rel="noopener noreferrer" class="project-card-btn project-card-btn-primary">
                                     <i class="fab fa-github"></i>
-                                    "View on GitHub"
+                                    <span>"View on GitHub"</span>
                                 </a>
                                 {project_homepage.map(|homepage| {
                                     view! {
-                                        <a href=homepage target="_blank" rel="noopener noreferrer" class="project-link-btn secondary">
+                                        <a href=homepage target="_blank" rel="noopener noreferrer" class="project-card-btn project-card-btn-secondary">
                                             <i class="fas fa-external-link-alt"></i>
-                                            "Live Demo"
+                                            <span>"Live Demo"</span>
                                         </a>
                                     }
                                 })}
-                            </div>
+                            </footer>
                         </article>
                     }
                 }).collect::<Vec<_>>()}
