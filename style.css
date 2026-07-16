@@ -1511,6 +1511,463 @@ ul, ol {
 }
 
 /* ============================================
+   Projects Page Responsive
+   ============================================ */
+
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .project-card {
+    padding: 20px;
+  }
+
+  .project-card-title {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 600px) {
+  .project-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .project-card-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .project-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .project-card-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .project-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ============================================
+   Projects Page Responsive
+   ============================================ */
+
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .project-card {
+    padding: 20px;
+  }
+
+  .project-card-title {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 600px) {
+  .project-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .project-card-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .project-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .project-card-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .project-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ============================================
+   Post Page Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .post-page {
+    max-width: 100%;
+  }
+
+  .post-title {
+    font-size: 24px;
+  }
+
+  .post-content h1 {
+    font-size: 24px;
+  }
+
+  .post-content h2 {
+    font-size: 20px;
+  }
+
+  .post-content h3 {
+    font-size: 18px;
+  }
+
+  .post-content h4 {
+    font-size: 16px;
+  }
+
+  .post-content pre {
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+
+  .code-block pre {
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+
+  .code-header {
+    padding: 6px 12px;
+  }
+
+  .post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .post-card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+/* ============================================
+   Archives/Categories/Tags Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .archives-page,
+  .categories-page,
+  .tags-page {
+    max-width: 100%;
+  }
+
+  .archive-year-title {
+    font-size: 20px;
+  }
+
+  .archive-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 0;
+  }
+
+  .archive-date {
+    min-width: auto;
+  }
+
+  .category-title {
+    font-size: 18px;
+  }
+
+  .tag-item {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+}
+
+/* ============================================
+   About Page Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .about-page {
+    max-width: 100%;
+  }
+
+  .about-card {
+    padding: 18px;
+  }
+
+  .about-links {
+    gap: 8px;
+  }
+
+  .about-link {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+/* ============================================
+   Search Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .search-wrapper {
+    margin-bottom: 20px;
+  }
+
+  .search-input {
+    padding: 12px 16px 12px 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .search-icon {
+    left: 16px;
+    font-size: 16px;
+  }
+
+  .search-results {
+    left: -16px;
+    right: -16px;
+    border-radius: var(--radius-md);
+    max-height: 300px;
+  }
+}
+
+/* ============================================
+   Home Page Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .page-heading {
+    font-size: 26px;
+  }
+
+  .page-subheading {
+    font-size: 14px;
+  }
+
+  .post-card {
+    padding: 18px;
+  }
+
+  .post-card-title {
+    font-size: 16px;
+  }
+
+  .post-card-excerpt {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+
+  .post-card-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+}
+
+/* ============================================
+   Topbar Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .topbar {
+    height: 52px;
+    padding: 0 12px;
+  }
+
+  .topbar-title {
+    font-size: 14px;
+  }
+
+  .sidebar-toggle {
+    font-size: 18px;
+    padding: 4px;
+  }
+}
+
+/* ============================================
+   Sidebar Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .sidebar-inner {
+    padding: 20px 16px;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+  }
+
+  .site-title {
+    font-size: 16px;
+  }
+
+  .site-subtitle {
+    font-size: 12px;
+  }
+
+  .nav-link {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .social-link {
+    font-size: 16px;
+    padding: 8px;
+  }
+}
+
+/* ============================================
+   Footer Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 18px 16px;
+    font-size: 12px;
+  }
+}
+
+/* ============================================
+   Scroll to Top Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .scroll-top {
+    bottom: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+}
+
+/* ============================================
+   General Mobile Improvements
+   ============================================ */
+
+@media (max-width: 480px) {
+  :root {
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  .content-inner {
+    padding: 16px 12px !important;
+  }
+
+  h1 {
+    font-size: 24px !important;
+  }
+
+  h2 {
+    font-size: 20px !important;
+  }
+
+  .post-card {
+    padding: 16px;
+  }
+
+  .post-card-title {
+    font-size: 15px;
+  }
+
+  .project-card {
+    padding: 16px;
+  }
+
+  .project-card-title {
+    font-size: 16px;
+  }
+
+  .project-card-description {
+    font-size: 13px;
+  }
+
+  .project-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    padding: 10px 10px 4px;
+  }
+}
+
+/* ============================================
+   Touch Device Optimizations
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  .post-card:hover,
+  .project-card:hover,
+  .archive-item:hover,
+  .nav-link:hover,
+  .social-link:hover,
+  .theme-toggle-btn:hover,
+  .scroll-top:hover,
+  .about-link:hover,
+  .project-btn:hover,
+  .project-topic:hover,
+  .post-card-tag:hover,
+  .tag-item:hover,
+  .search-input:hover,
+  .search-result-item:hover,
+  .back-link:hover,
+  .project-card-link:hover {
+    transform: none;
+    box-shadow: none;
+    background: inherit;
+    border-color: inherit;
+    color: inherit;
+  }
+
+  .project-card::before {
+    transform: scaleX(1);
+  }
+
+  .project-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .avatar:hover {
+    transform: none;
+    box-shadow: 0 0 0 3px var(--bg-sidebar), 0 0 0 5px var(--accent);
+  }
+
+  .back-link:hover i {
+    transform: none;
+  }
+
+  .project-card-link:hover i {
+    transform: none;
+  }
+
+  .scroll-top:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
    Scrollbar
    ============================================ */
 

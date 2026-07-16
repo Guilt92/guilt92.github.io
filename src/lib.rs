@@ -2,7 +2,7 @@ use leptos::either::Either;
 use leptos::prelude::*;
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsCast;
-use web_sys::window;
+use web_sys::{window, HashChangeEvent};
 
 #[wasm_bindgen(start)]
 pub fn main() {
@@ -609,11 +609,26 @@ fn App() -> impl IntoView {
     let (route_read, route_write) = signal(parse_hash());
     let set_route = route_write;
 
+    // Use hashchange event for immediate navigation updates
+    let _hashchange_listener = {
+        let set_route = set_route;
+        let parse_hash = parse_hash;
+        let window = window().expect("no window");
+        let closure = wasm_bindgen::closure::Closure::wrap(Box::new(move |_: HashChangeEvent| {
+            set_route.set(parse_hash());
+        }) as Box<dyn FnMut(_)>);
+        window
+            .add_event_listener_with_callback("hashchange", closure.as_ref().unchecked_ref())
+            .expect("failed to add hashchange listener");
+        closure.forget();
+    };
+
+    // Also keep polling as fallback
     let _route_interval;
     {
         let set_route = set_route;
         let route_read = route_read;
-        _route_interval = gloo_timers::callback::Interval::new(100, move || {
+        _route_interval = gloo_timers::callback::Interval::new(500, move || {
             let new_route = parse_hash();
             let current = route_read.get_untracked();
             if new_route != current {
