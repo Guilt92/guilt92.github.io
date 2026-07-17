@@ -118,63 +118,33 @@ fn all_projects() -> Vec<GitHubProject> {
     vec![
         GitHubProject {
             name: "guilt92.github.io".into(),
-            description: "Personal technical blog built with Rust, Leptos, and WebAssembly. Features custom markdown rendering with syntax highlighting, dark/light theme, and responsive design.".into(),
+            description: "WebSite.".into(),
             html_url: "https://github.com/guilt92/guilt92.github.io".into(),
-            stargazers_count: 42,
+            stargazers_count: 00,
             language: Some("Rust".into()),
             topics: vec!["rust".into(), "leptos".into(), "wasm".into(), "blog".into(), "webassembly".into()],
             homepage: Some("https://guilt92.github.io".into()),
             updated_at: "2025-12-15T10:30:00Z".into(),
         },
         GitHubProject {
-            name: "rust-wasm-web-crawler".into(),
+            name: "shortlink".into(),
             description: "High-performance concurrent web crawler built with Rust, Tokio, and Reqwest. Features async scraping, rate limiting, robots.txt compliance, and configurable depth/width limits.".into(),
-            html_url: "https://github.com/guilt92/rust-wasm-web-crawler".into(),
-            stargazers_count: 238,
+            html_url: "https://github.com/Guilt92/shortLink".into(),
+            stargazers_count: 0,
             language: Some("Rust".into()),
             topics: vec!["rust".into(), "async".into(), "tokio".into(), "web-crawler".into(), "concurrency".into()],
             homepage: None,
-            updated_at: "2025-11-10T14:22:00Z".into(),
+            updated_at: "0000-00-00T14:22:00Z".into(),
         },
         GitHubProject {
-            name: "zero-cost-abstractions-demo".into(),
+            name: "A Rust based DNS client, server, and resolver".into(),
             description: "Educational repository demonstrating Rust's zero-cost abstractions through assembly analysis, benchmarking, and compiler optimization exploration.".into(),
-            html_url: "https://github.com/guilt92/zero-cost-abstractions-demo".into(),
-            stargazers_count: 156,
+            html_url: "https://github.com/Guilt92/OutisCloud-hickory-dns".into(),
+            stargazers_count: 0,
             language: Some("Rust".into()),
             topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
             homepage: None,
-            updated_at: "2025-11-28T09:15:00Z".into(),
-        },
-        GitHubProject {
-            name: "memory-safety-explained".into(),
-            description: "Deep dive into Rust's ownership model, borrow checker, and lifetime system with interactive examples and visualizations showing how memory safety is achieved without garbage collection.".into(),
-            html_url: "https://github.com/guilt92/memory-safety-explained".into(),
-            stargazers_count: 312,
-            language: Some("Rust".into()),
-            topics: vec!["rust".into(), "memory-safety".into(), "ownership".into(), "borrow-checker".into(), "education".into()],
-            homepage: Some("https://guilt92.github.io/memory-safety".into()),
-            updated_at: "2025-10-22T16:45:00Z".into(),
-        },
-        GitHubProject {
-            name: "async-rust-deep-dive".into(),
-            description: "Comprehensive exploration of Rust's async/await model: futures, tasks, executors, pinning, and the Tokio runtime internals. Includes practical patterns for production async code.".into(),
-            html_url: "https://github.com/guilt92/async-rust-deep-dive".into(),
-            stargazers_count: 189,
-            language: Some("Rust".into()),
-            topics: vec!["rust".into(), "async".into(), "tokio".into(), "futures".into(), "concurrency".into()],
-            homepage: None,
-            updated_at: "2025-08-15T11:20:00Z".into(),
-        },
-        GitHubProject {
-            name: "rust-traits-generics-workshop".into(),
-            description: "Interactive workshop materials covering advanced trait patterns, generic programming, associated types, GATs, and trait objects. Includes exercises and solutions.".into(),
-            html_url: "https://github.com/guilt92/rust-traits-generics-workshop".into(),
-            stargazers_count: 97,
-            language: Some("Rust".into()),
-            topics: vec!["rust".into(), "traits".into(), "generics".into(), "workshop".into(), "education".into()],
-            homepage: None,
-            updated_at: "2025-09-01T13:30:00Z".into(),
+            updated_at: "0000-00-00T09:15:00Z".into(),
         },
     ]
 }
@@ -687,10 +657,10 @@ fn App() -> impl IntoView {
                             <a href="https://github.com/guilt92" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
                                 <i class="fab fa-github"></i>
                             </a>
-                            <a href="https://twitter.com/guilt92" target="_blank" rel="noopener" class="social-link" aria-label="Twitter">
+                            <a href="https://twitter.com/Aallahdadi92" target="_blank" rel="noopener" class="social-link" aria-label="Twitter">
                                 <i class="fab fa-x-twitter"></i>
                             </a>
-                            <a href="mailto:guilt92@users.noreply.github.com" class="social-link" aria-label="Email">
+                            <a href="mailto:amirhoseinalahdadi76@gmail.com" class="social-link" aria-label="Email">
                                 <i class="fas fa-envelope"></i>
                             </a>
                         </div>
@@ -1234,29 +1204,46 @@ fn AboutPage() -> impl IntoView {
             <h1>"About"</h1>
             <div class="about-card">
                 <p>
-                    "A technical space focused on deep-dive analysis of systems programming, performance engineering, "
-                    "and software architecture. Built entirely in Rust and compiled to WebAssembly."
+                    "Hi, I'm a DevOps engineer with a strong interest in Rust, Linux,
+                    systems programming, and infrastructure. I enjoy building software,
+                    exploring how systems work internally, and learning by creating real
+                    projects."
+                </p>
+                <p style="margin-top:16px;">
+                    "This website is where I document what I'm learning, share personal
+                    projects, and write about topics that I find interesting—from Rust and
+                    Linux to networking, distributed systems, and software architecture."
                 </p>
             </div>
 
-            <h2>"Focus Areas"</h2>
+            <h2>"Topics You'll Find Here"</h2>
+
             <ul style="padding-left:20px;list-style:disc;">
-                <li style="margin-bottom:8px;color:var(--text-secondary);">"Rust language internals and advanced patterns"</li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">"WebAssembly and browser-level systems programming"</li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">"Concurrent and async programming architectures"</li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">"Performance engineering and optimization"</li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">"Low-level systems and OS internals"</li>
+                <li style="margin-bottom:8px;color:var(--text-secondary);">
+                    "Rust and systems programming"
+                </li>
+                <li style="margin-bottom:8px;color:var(--text-secondary);">
+                    "Linux and operating system internals"
+                </li>
+                <li style="margin-bottom:8px;color:var(--text-secondary);">
+                    "Networking, DNS, and infrastructure"
+                </li>
+                <li style="margin-bottom:8px;color:var(--text-secondary);">
+                    "Performance and software architecture"
+                </li>
+                <li style="margin-bottom:8px;color:var(--text-secondary);">
+                    "Personal projects and open-source experiments"
+                </li>
             </ul>
 
-            <h2>"Tech Stack"</h2>
+            <h2>"Why This Site?"</h2>
+
             <div class="about-card">
-                <p style="margin-bottom:8px;">"This site is built with:"</p>
-                <ul style="padding-left:20px;list-style:disc;">
-                    <li style="margin-bottom:6px;color:var(--text-secondary);">"Rust + Leptos (client-side rendered SPA)"</li>
-                    <li style="margin-bottom:6px;color:var(--text-secondary);">"WebAssembly (compiled via Trunk)"</li>
-                    <li style="margin-bottom:6px;color:var(--text-secondary);">"Custom markdown renderer with syntax highlighting"</li>
-                    <li style="margin-bottom:6px;color:var(--text-secondary);">"GitHub Actions CI/CD for automated deployment"</li>
-                </ul>
+                <p>
+                    "I use this site to keep track of what I learn, document projects,
+                    and share practical knowledge. Everything here reflects my learning
+                    journey and the projects I'm actively working on."
+                </p>
             </div>
 
             <h2>"Connect"</h2>
@@ -1265,11 +1252,11 @@ fn AboutPage() -> impl IntoView {
                     <i class="fab fa-github"></i>
                     "GitHub"
                 </a>
-                <a href="https://twitter.com/guilt92" target="_blank" rel="noopener" class="about-link">
+                <a href="https://x.com/Aallahdadi92" target="_blank" rel="noopener" class="about-link">
                     <i class="fab fa-x-twitter"></i>
                     "Twitter / X"
                 </a>
-                <a href="mailto:guilt92@users.noreply.github.com" class="about-link">
+                <a href="mailto:amirhoseinalahdadi76@gmail.com" class="about-link">
                     <i class="fas fa-envelope"></i>
                     "Email"
                 </a>
