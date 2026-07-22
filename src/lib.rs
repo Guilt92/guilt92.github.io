@@ -128,7 +128,7 @@ fn all_projects() -> Vec<GitHubProject> {
         },
         GitHubProject {
             name: "shortlink".into(),
-            description: "High-performance concurrent web crawler built with Rust, Tokio, and Reqwest. Features async scraping, rate limiting, robots.txt compliance, and configurable depth/width limits.".into(),
+            description: " shortlink ".into(),
             html_url: "https://github.com/Guilt92/shortLink".into(),
             stargazers_count: 0,
             language: Some("Rust".into()),
@@ -137,8 +137,8 @@ fn all_projects() -> Vec<GitHubProject> {
             updated_at: "0000-00-00T14:22:00Z".into(),
         },
         GitHubProject {
-            name: "A Rust based DNS client, server, and resolver".into(),
-            description: "Educational repository demonstrating Rust's zero-cost abstractions through assembly analysis, benchmarking, and compiler optimization exploration.".into(),
+            name: "A Rust based DNS ".into(),
+            description: "A Rust based DNS".into(),
             html_url: "https://github.com/Guilt92/OutisCloud-hickory-dns".into(),
             stargazers_count: 0,
             language: Some("Rust".into()),
