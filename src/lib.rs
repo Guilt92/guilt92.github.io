@@ -653,10 +653,10 @@ fn App() -> impl IntoView {
             }>
                 <div class="sidebar-inner">
                     <div class="sidebar-header">
-                    <div class="avatar">
+                    <div class="avatar" style="border-radius: 5px;" >
                             <img src="https://avatars.githubusercontent.com/u/33751897?v=4&size=64" alt="Avatar" />
                     </div>
-                        <div class="site-title">"Guilt92"</div>
+                        <div class="site-title">"Amirhosein Allahdadi"</div>
                         <div class="site-subtitle">"DevOps Engineering"</div>
                     </div>
 
@@ -712,7 +712,7 @@ fn App() -> impl IntoView {
                     <button class="sidebar-toggle" on:click=toggle_sidebar aria-label="Toggle sidebar">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="topbar-title">"guilt92"</div>
+                    <div class="topbar-title">"Amirhosein Allahdadi"</div>
                     <div class="topbar-actions">
                         <button class="sidebar-toggle" on:click=move |_| toggle_dark(!dark_mode.get()) aria-label="Toggle theme">
                             {move || {
@@ -750,12 +750,7 @@ fn App() -> impl IntoView {
 
                     <footer class="site-footer">
                         <p>
-                            "© 2026 guilt92 · Built with "
-                            <a href="https://leptos.dev" target="_blank" rel="noopener">"Leptos"</a>
-                            " + "
-                            <a href="https://www.rust-lang.org" target="_blank" rel="noopener">"Rust"</a>
-                            " · "
-                            <a href="https://github.com/guilt92/guilt92.github.io" target="_blank" rel="noopener">"Source"</a>
+                            "© 2026 Guilt92"
                         </p>
                     </footer>
                 </div>
@@ -838,9 +833,9 @@ fn HomePage(posts: Vec<BlogPost>, _search_query: String) -> impl IntoView {
 
     view! {
         <div>
-            <h1 class="page-heading">"guilt92"</h1>
+            <h1 class="page-heading">"Amirhosein Allahdadi"</h1>
             <p class="page-subheading">
-                "Deep technical notes on systems programming, distributed systems, performance engineering, and software architecture."
+                // "Deep technical notes on systems programming, distributed systems, performance engineering, and software architecture."
             </p>
 
             <div class="search-wrapper">
