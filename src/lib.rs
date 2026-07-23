@@ -14,7 +14,7 @@ pub fn main() {
             splash.remove();
         }
     }
-    mount_to_body(App); 
+    mount_to_body(App);
 }
 
 #[derive(Clone, Debug, PartialEq)]
