@@ -14,7 +14,6 @@ pub fn main() {
             splash.remove();
         }
     }
-
     mount_to_body(App);
 }
 
