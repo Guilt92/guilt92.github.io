@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 # Ensure workflow is not disabled due to inactivity
-schedule:
-  - cron: '0 0 * * 0'
+  schedule:
+    - cron: '0 0 * * 0'
 
 permissions:
   contents: read
