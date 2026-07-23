@@ -69,7 +69,7 @@ fn all_posts() -> Vec<BlogPost> {
             tags: vec!["rust".into(), "async".into(), "tokio".into(), "networking".into()],
             content: include_str!("../content/posts/concurrent-web-crawler.md").into(),
         },
-        BlogPost {
+        BlogPost { 
             title: "Memory Safety Without Garbage Collection".into(),
             slug: "memory-safety-without-gc".into(),
             date: "2025-10-22".into(),
