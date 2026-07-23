@@ -88,15 +88,15 @@ fn all_posts() -> Vec<BlogPost> {
             tags: vec!["rust".into(), "errors".into(), "patterns".into()],
             content: include_str!("../content/posts/error-handling-patterns.md").into(),
         },
-        BlogPost {
-            title: "Deploying Rust WASM to GitHub Pages".into(),
-            slug: "deploying-rust-wasm-github-pages".into(),
-            date: "2025-09-18".into(),
-            excerpt: "Complete CI/CD pipeline for building, optimizing, and deploying a Leptos WASM application to GitHub Pages with Trunk.".into(),
-            category: "DevOps".into(),
-            tags: vec!["rust".into(), "wasm".into(), "ci-cd".into(), "github-actions".into()],
-            content: include_str!("../content/posts/deploying-rust-wasm-github-pages.md").into(),
-        },
+        // BlogPost {
+        //     title: "Deploying Rust WASM to GitHub Pages".into(),
+        //     slug: "deploying-rust-wasm-github-pages".into(),
+        //     date: "2025-09-18".into(),
+        //     excerpt: "Complete CI/CD pipeline for building, optimizing, and deploying a Leptos WASM application to GitHub Pages with Trunk.".into(),
+        //     category: "DevOps".into(),
+        //     tags: vec!["rust".into(), "wasm".into(), "ci-cd".into(), "github-actions".into()],
+        //     content: include_str!("../content/posts/deploying-rust-wasm-github-pages.md").into(),
+        // },
         BlogPost {
             title: "Rust Traits and Generics Deep Dive".into(),
             slug: "traits-and-generics".into(),
@@ -148,6 +148,16 @@ fn all_projects() -> Vec<GitHubProject> {
             name: "A Rust based DNS ".into(),
             description: "A Rust based DNS".into(),
             html_url: "https://github.com/Guilt92/OutisCloud-hickory-dns".into(),
+            stargazers_count: 0,
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
+            homepage: None,
+            updated_at: "0000-00-00T09:15:00Z".into(),
+        },
+        GitHubProject {
+            name: "Kubernetes".into(),
+            description: "Everything you need to provision Kubernetes clusters and deploy production-ready applications".into(),
+            html_url: "https://github.com/Guilt92/kubernetes".into(),
             stargazers_count: 0,
             language: Some("Rust".into()),
             topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
@@ -644,9 +654,11 @@ fn App() -> impl IntoView {
             }>
                 <div class="sidebar-inner">
                     <div class="sidebar-header">
-                        <div class="avatar">"G"</div>
-                        <div class="site-title">"guilt92"</div>
-                        <div class="site-subtitle">"Low-level engineering, demystified."</div>
+                    <div class="avatar">
+                            <img src="https://avatars.githubusercontent.com/u/33751897?v=4&size=64" alt="Avatar" />
+                    </div>
+                        <div class="site-title">"Guilt92"</div>
+                        <div class="site-subtitle">"DevOps Engineering"</div>
                     </div>
 
                     <nav class="sidebar-nav">
@@ -654,9 +666,9 @@ fn App() -> impl IntoView {
 
                         <NavItem route=route_read href="/".to_string() icon="fa-solid fa-house".to_string() label="Home".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/projects".to_string() icon="fa-solid fa-code".to_string() label="Projects".to_string() close=close_sidebar />
-                        <NavItem route=route_read href="/archives".to_string() icon="fa-solid fa-archive".to_string() label="Archives".to_string() close=close_sidebar />
+                        // <NavItem route=route_read href="/archives".to_string() icon="fa-solid fa-archive".to_string() label="Archives".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/categories".to_string() icon="fa-solid fa-folder-tree".to_string() label="Categories".to_string() close=close_sidebar />
-                        <NavItem route=route_read href="/tags".to_string() icon="fa-solid fa-tags".to_string() label="Tags".to_string() close=close_sidebar />
+                        // <NavItem route=route_read href="/tags".to_string() icon="fa-solid fa-tags".to_string() label="Tags".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/about".to_string() icon="fa-solid fa-circle-info".to_string() label="About".to_string() close=close_sidebar />
                     </nav>
 
@@ -879,7 +891,7 @@ fn HomePage(posts: Vec<BlogPost>, _search_query: String) -> impl IntoView {
                                     <a href=format!("#/post/{}", slug) class=class_str>
                                         <div class="post-card-header">
                                             <span class="post-card-category">{category}</span>
-                                            <span class="post-card-date"><i class="far fa-calendar"></i> {date}</span>
+                                            <span class="post-card-date"> <i class="far fa-calendar"></i> {date}</span>
                                         </div>
                                         <h2 class="post-card-title">{title}</h2>
                                         <p class="post-card-excerpt">{excerpt}</p>
@@ -1106,7 +1118,7 @@ fn ProjectsPage() -> impl IntoView {
             <header class="projects-header">
                 <h1><i class="fas fa-folder-open"></i> "Projects"</h1>
                 <p class="projects-subtitle">
-                    "Open-source projects and experiments. Built with Rust, WebAssembly, and modern tooling."
+                    "A collection of my open-source projects."
                 </p>
             </header>
             
