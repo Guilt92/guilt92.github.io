@@ -1,6 +1,12 @@
 [build]
-target = "index.html"
+target = "index.template.html"
 dist = "dist"
+no_default_favicon = true
+
+[[hooks]]
+stage = "post_build"
+command = "sh"
+command_arguments = ["-c", "rm -f devnotes-site-*.js devnotes-site-*_bg.wasm style-*.css && cp dist/index.html . && cp dist/style-*.css . && cp dist/devnotes-site-*.js . && cp dist/devnotes-site-*_bg.wasm ."]
 
 [watch]
 watch = ["src", "index.html", "style.css", ".nojekyll"]
