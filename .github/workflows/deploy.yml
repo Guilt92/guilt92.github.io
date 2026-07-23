@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Ensure workflow is not disabled due to inactivity
+schedule:
+  - cron: '0 0 * * 0'
+
 permissions:
   contents: read
   pages: write
@@ -12,7 +16,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
