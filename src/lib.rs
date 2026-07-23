@@ -154,7 +154,7 @@ fn all_projects() -> Vec<GitHubProject> {
             updated_at: "0000-00-00T09:15:00Z".into(),
         },
         GitHubProject {
-            name: "Kubernetes".into(),
+            name: "Kubernetesssssssssss".into(),
             description: "Everything you need to provision Kubernetes clusters and deploy production-ready applications".into(),
             html_url: "https://github.com/Guilt92/kubernetes".into(),
             stargazers_count: 0,
