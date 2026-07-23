@@ -7,6 +7,14 @@ use web_sys::{window, HashChangeEvent};
 #[wasm_bindgen(start)]
 pub fn main() {
     console_error_panic_hook::set_once();
+
+    // Remove fallback loading splash before mounting the app
+    if let Some(doc) = window().and_then(|w| w.document()) {
+        if let Some(splash) = doc.get_element_by_id("loading-splash") {
+            splash.remove();
+        }
+    }
+
     mount_to_body(App);
 }
 
