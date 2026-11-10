@@ -30,11 +30,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/style-1876c406283ee14a.css" integrity="sha384-G/ME/coz3NcTmAc8qFSYf80ILAXhTXsl6W1Lr2Lwd7b8R3VUCyvNt+mC8uDfC64I"/>
+    <link rel="stylesheet" href="/style-a631fb3407fcf553.css" integrity="sha384-g2oyuFLF/hcGtS/bTLM17EJ5IiT8b8S7Q2cEOu5nc5HQV2Dph8eL1AsLc0ofY6/s"/>
     
 <script type="module">
-import init, * as bindings from '/devnotes-site-6e0d4046eab4262.js';
-const wasm = await init({ module_or_path: '/devnotes-site-6e0d4046eab4262_bg.wasm' });
+import init, * as bindings from '/devnotes-site-ab3b87e06b1372dc.js';
+const wasm = await init({ module_or_path: '/devnotes-site-ab3b87e06b1372dc_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -64,33 +64,7 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
       }
       .g92-loading-text { color: #8d8981; font-size: 13px; letter-spacing: 0.04em; }
     </style>
-<script>
-function copyCode(btn) {
-  var pre = btn.closest('.code-block').querySelector('pre');
-  if (!pre) return;
-  var code = pre.querySelector('code');
-  var text = code ? code.textContent : pre.textContent;
-  navigator.clipboard.writeText(text).then(function() {
-    btn.textContent = 'copied';
-    btn.classList.add('copied');
-    setTimeout(function() {
-      btn.textContent = 'copy';
-      btn.classList.remove('copied');
-    }, 2000);
-  }).catch(function() {
-    btn.textContent = 'error';
-    setTimeout(function() { btn.textContent = 'copy'; }, 2000);
-  });
-}
-(function() {
-  var splash = document.getElementById('loading-splash');
-  if (splash) {
-    var hide = function() { splash.classList.add('g92-hide'); setTimeout(function() { splash.remove(); }, 350); };
-    window.addEventListener('load', function() { setTimeout(hide, 200); });
-  }
-})();
-</script>
-<link rel="modulepreload" href="/devnotes-site-6e0d4046eab4262.js" crossorigin="anonymous" integrity="sha384-VdhlIqTgSM5r1HPLqwrpSlLiZOVdbvopatgE5heUp3ECj/2hKrSp++HmJfYkFUUw"><link rel="preload" href="/devnotes-site-6e0d4046eab4262_bg.wasm" crossorigin="anonymous" integrity="sha384-m1JcKnSOuYriRZB4245mR7SmURicJipS/PW9bVAmmocAa4K7cuHw5SMuVxZOzLm/" as="fetch" type="application/wasm"></head>
+<link rel="modulepreload" href="/devnotes-site-ab3b87e06b1372dc.js" crossorigin="anonymous" integrity="sha384-GZK/Z2wfXkjJiP1pKJEd53GL8d/RKFWkHyxSZpfKB1ey9HQ6jQvtahMl5vDxfkmW"><link rel="preload" href="/devnotes-site-ab3b87e06b1372dc_bg.wasm" crossorigin="anonymous" integrity="sha384-fyAEZUpOsUrnVVrX/jPKDV2xOQSomUX8mw6XyYReAXoQjIxtD/uWmyu8zv/viji2" as="fetch" type="application/wasm"></head>
 <body>
   <div id="loading-splash">
     <div class="g92-brand">g92</div>

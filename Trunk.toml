@@ -4,7 +4,7 @@ dist = "dist"
 no_default_favicon = true
 
 [watch]
-watch = ["src", "index.html", "style.css", ".nojekyll"]
+watch = ["src", "index.template.html", "style.css", ".nojekyll"]
 
 [serve]
 address = "127.0.0.1"

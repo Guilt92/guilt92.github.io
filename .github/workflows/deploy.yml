@@ -5,10 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Ensure workflow is not disabled due to inactivity
-  schedule:
-    - cron: '0 0 * * 0'
-
 permissions:
   contents: read
   pages: write
@@ -48,6 +44,15 @@ jobs:
 
       - name: Build
         run: trunk build --release
+
+      - name: Verify build output
+        run: |
+          test -f dist/index.html
+          test -f dist/*.js
+          test -f dist/*.wasm
+          test -f dist/*.css
+          grep -q "devnotes-site-" dist/index.html
+          echo "Build output is complete."
 
       - name: Copy .nojekyll
         run: cp .nojekyll dist/
