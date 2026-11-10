@@ -3,21 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>guilt92 — Devops Engineer</title>
+    <title>guilt92 — Engineering Field Notes</title>
     <meta name="description" content="Deep technical notes on systems programming, distributed systems, performance engineering, and software architecture. Built with Rust and WebAssembly." />
-    <meta name="keywords" content="rust, systems programming, wasm, low-level, engineering, blog, performance" />
-    <meta name="author" content="guilt92" />
+    <meta name="keywords" content="rust, systems programming, wasm, devops, infrastructure, engineering blog" />
+    <meta name="author" content="Amirhosein Allahdadi" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="guilt92 — Rust Systems & Low-Level Engineering" />
+    <meta property="og:title" content="guilt92 — Engineering Field Notes" />
     <meta property="og:description" content="Deep technical notes on systems programming, distributed systems, performance engineering, and software architecture." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://guilt92.github.io" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="guilt92 — Rust Systems & Low-Level Engineering" />
+    <meta name="twitter:title" content="guilt92 — Engineering Field Notes" />
     <meta name="twitter:description" content="Deep technical notes on systems programming, distributed systems, performance engineering, and software architecture." />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,26 +47,54 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
       #loading-splash {
         position: fixed; inset: 0; z-index: 9999;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        background: #0d1117; color: #8b949e;
+        background: #121316; color: #8d8981;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
         font-size: 14px;
         transition: opacity 0.3s ease;
       }
-      #loading-splash.hide { opacity: 0; pointer-events: none; }
-      .loading-spinner {
-        width: 28px; height: 28px; margin-bottom: 16px;
-        border: 3px solid rgba(88, 166, 255, 0.15);
-        border-top-color: #58a6ff;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+      #loading-splash.g92-hide { opacity: 0; pointer-events: none; }
+      .g92-brand {
+        width: 44px; height: 44px; border-radius: 6px;
+        background: rgba(216, 163, 106, 0.08);
+        border: 1px solid rgba(216, 163, 106, 0.25);
+        display: flex; align-items: center; justify-content: center;
+        color: #d8a36a; font-family: 'JetBrains Mono', monospace;
+        font-size: 14px; font-weight: 700; letter-spacing: -0.02em;
+        margin-bottom: 20px;
       }
-      @keyframes spin { to { transform: rotate(360deg); } }
+      .g92-loading-text { color: #8d8981; font-size: 13px; letter-spacing: 0.04em; }
     </style>
+<script>
+function copyCode(btn) {
+  var pre = btn.closest('.code-block').querySelector('pre');
+  if (!pre) return;
+  var code = pre.querySelector('code');
+  var text = code ? code.textContent : pre.textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'copied';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = 'copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(function() {
+    btn.textContent = 'error';
+    setTimeout(function() { btn.textContent = 'copy'; }, 2000);
+  });
+}
+(function() {
+  var splash = document.getElementById('loading-splash');
+  if (splash) {
+    var hide = function() { splash.classList.add('g92-hide'); setTimeout(function() { splash.remove(); }, 350); };
+    window.addEventListener('load', function() { setTimeout(hide, 200); });
+  }
+})();
+</script>
 <link rel="modulepreload" href="/devnotes-site-6e0d4046eab4262.js" crossorigin="anonymous" integrity="sha384-VdhlIqTgSM5r1HPLqwrpSlLiZOVdbvopatgE5heUp3ECj/2hKrSp++HmJfYkFUUw"><link rel="preload" href="/devnotes-site-6e0d4046eab4262_bg.wasm" crossorigin="anonymous" integrity="sha384-m1JcKnSOuYriRZB4245mR7SmURicJipS/PW9bVAmmocAa4K7cuHw5SMuVxZOzLm/" as="fetch" type="application/wasm"></head>
 <body>
   <div id="loading-splash">
-    <div class="loading-spinner"></div>
-    <div>Loading…</div>
+    <div class="g92-brand">g92</div>
+    <div class="g92-loading-text">Loading…</div>
   </div>
 </body>
 </html>

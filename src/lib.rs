@@ -33,11 +33,20 @@ struct GitHubProject {
     name: String,
     description: String,
     html_url: String,
-    stargazers_count: u32,
     language: Option<String>,
     topics: Vec<String>,
     homepage: Option<String>,
     updated_at: String,
+}
+
+fn format_date(date: &str) -> String {
+    let parts: Vec<&str> = date.split('-').collect();
+    if parts.len() < 3 { return date.to_string(); }
+    let months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    let month_idx: usize = parts[1].parse::<usize>().unwrap_or(1).saturating_sub(1);
+    let day = &parts[2];
+    let day_clean = if day.len() >= 2 { &day[..2] } else { day };
+    format!("{} {}, {}", months.get(month_idx).unwrap_or(&"???"), day_clean, parts[0])
 }
 
 fn all_posts() -> Vec<BlogPost> {
@@ -125,103 +134,75 @@ fn all_projects() -> Vec<GitHubProject> {
     vec![
         GitHubProject {
             name: "guilt92.github.io".into(),
-            description: "WebSite.".into(),
+            description: "Personal blog built with Rust, Leptos, and WebAssembly — deploying engineering field notes on GitHub Pages.".into(),
             html_url: "https://github.com/guilt92/guilt92.github.io".into(),
-            stargazers_count: 00,
             language: Some("Rust".into()),
-            topics: vec!["rust".into(), "leptos".into(), "wasm".into(), "blog".into(), "webassembly".into()],
+            topics: vec!["rust".into(), "leptos".into(), "wasm".into(), "blog".into()],
             homepage: Some("https://guilt92.github.io".into()),
-            updated_at: "2025-12-15T10:30:00Z".into(),
+            updated_at: "2025-12-15".into(),
         },
         GitHubProject {
             name: "shortlink".into(),
-            description: " shortlink ".into(),
+            description: "A Rust-based URL shortener with async HTTP handling using Tokio.".into(),
             html_url: "https://github.com/Guilt92/shortLink".into(),
-            stargazers_count: 0,
             language: Some("Rust".into()),
-            topics: vec!["rust".into(), "async".into(), "tokio".into(), "web-crawler".into(), "concurrency".into()],
+            topics: vec!["rust".into(), "tokio".into(), "async".into(), "web".into()],
             homepage: None,
-            updated_at: "0000-00-00T14:22:00Z".into(),
-        },
-        GitHubProject {
-            name: "A Rust based DNS ".into(),
-            description: "A Rust based DNS".into(),
-            html_url: "https://github.com/Guilt92/OutisCloud-hickory-dns".into(),
-            stargazers_count: 0,
-            language: Some("Rust".into()),
-            topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
-            homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
-        },
-        GitHubProject {
-            name: "Kubernetes".into(),
-            description: "Everything you need to provision Kubernetes clusters and deploy production-ready applications".into(),
-            html_url: "https://github.com/Guilt92/kubernetes".into(),
-            stargazers_count: 0,
-            language: Some("Rust".into()),
-            topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
-            homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
-        },
-        GitHubProject {
-            name: "NameShift".into(),
-            description: "A Script For Dns Server Manager".into(),
-            html_url: "https://github.com/Guilt92/NameShift".into(),
-            stargazers_count: 0,
-            language: Some("shell".into()),
-            topics: vec!["shell".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
-            homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
-        },
-        GitHubProject {
-            name: "FireRust".into(),
-            description: "Firewall Rust".into(),
-            html_url: "https://github.com/Guilt92/FireRust".into(),
-            stargazers_count: 0,
-            language: Some("Rust".into()),
-            topics: vec!["Rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
-            homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
-        },
-        GitHubProject {
-            name: "NetMon".into(),
-            description: "NetMon - Network Monitoring System".into(),
-            html_url: "https://github.com/Guilt92/NetMon".into(),
-            stargazers_count: 0,
-            language: Some("shell".into()),
-            topics: vec!["shell".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
-            homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
-        },
-        GitHubProject {
-            name: "OutisCloud-Core-CDN".into(),
-            description: "CDN Manager".into(),
-            html_url: "https://github.com/Guilt92/OutisCloud-Core-CDN".into(),
-            stargazers_count: 0,
-            language: Some("Rust".into()),
-            topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
-            homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
-        },
-        GitHubProject {
-            name: "Ytiruces".into(),
-            description: "NFTables Manager Script".into(),
-            html_url: "https://github.com/Guilt92/Ytiruces".into(),
-            stargazers_count: 0,
-            language: Some("shell".into()),
-            topics: vec!["shell".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
-            homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
+            updated_at: "2025-08-20".into(),
         },
         GitHubProject {
             name: "OutisCloud-hickory-dns".into(),
-            description: "A Rust based DNS client, server, and resolver".into(),
+            description: "A Rust DNS client and server implementation using the Hickory DNS library.".into(),
             html_url: "https://github.com/Guilt92/OutisCloud-hickory-dns".into(),
-            stargazers_count: 0,
             language: Some("Rust".into()),
-            topics: vec!["rust".into(), "performance".into(), "optimization".into(), "assembly".into(), "education".into()],
+            topics: vec!["rust".into(), "dns".into(), "networking".into(), "async".into()],
             homepage: None,
-            updated_at: "0000-00-00T09:15:00Z".into(),
+            updated_at: "2025-06-10".into(),
+        },
+        GitHubProject {
+            name: "NameShift".into(),
+            description: "DNS server management automation script for declarative zone configuration.".into(),
+            html_url: "https://github.com/Guilt92/NameShift".into(),
+            language: Some("Shell".into()),
+            topics: vec!["shell".into(), "dns".into(), "automation".into(), "linux".into()],
+            homepage: None,
+            updated_at: "2025-04-18".into(),
+        },
+        GitHubProject {
+            name: "FireRust".into(),
+            description: "Rust firewall rules manager with NFTables backend for Linux servers.".into(),
+            html_url: "https://github.com/Guilt92/FireRust".into(),
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "firewall".into(), "networking".into(), "linux".into()],
+            homepage: None,
+            updated_at: "2025-03-05".into(),
+        },
+        GitHubProject {
+            name: "NetMon".into(),
+            description: "Lightweight network monitoring tool tracking bandwidth, latency, and service uptime.".into(),
+            html_url: "https://github.com/Guilt92/NetMon".into(),
+            language: Some("Shell".into()),
+            topics: vec!["shell".into(), "monitoring".into(), "network".into(), "linux".into()],
+            homepage: None,
+            updated_at: "2025-01-22".into(),
+        },
+        GitHubProject {
+            name: "OutisCloud-Core-CDN".into(),
+            description: "Core CDN infrastructure manager for distributing content across edge nodes.".into(),
+            html_url: "https://github.com/Guilt92/OutisCloud-Core-CDN".into(),
+            language: Some("Rust".into()),
+            topics: vec!["rust".into(), "cdn".into(), "networking".into(), "infrastructure".into()],
+            homepage: None,
+            updated_at: "2024-11-30".into(),
+        },
+        GitHubProject {
+            name: "Ytiruces".into(),
+            description: "NFTables rule management script for declarative firewall policy definition.".into(),
+            html_url: "https://github.com/Guilt92/Ytiruces".into(),
+            language: Some("Shell".into()),
+            topics: vec!["shell".into(), "nftables".into(), "firewall".into(), "linux".into()],
+            homepage: None,
+            updated_at: "2024-09-14".into(),
         },
     ]
 }
@@ -410,6 +391,27 @@ fn simple_regex_replace_italic(input: &str) -> String {
     out
 }
 
+fn estimate_reading_time(content: &str) -> String {
+    let words: Vec<&str> = content.split_whitespace().collect();
+    let minutes = (words.len() as f64 / 200.0).ceil() as u32;
+    if minutes <= 1 { "1 min read".to_string() } else { format!("{} min read", minutes) }
+}
+
+fn extract_toc_items(md: &str) -> Vec<(String, String)> {
+    let mut items = Vec::new();
+    for line in md.lines() {
+        let trimmed = line.trim();
+        if let Some(rest) = trimmed.strip_prefix("## ") {
+            let id = rest.to_lowercase().replace(' ', "-").replace(|c: char| !c.is_alphanumeric() && c != '-', "");
+            items.push((rest.to_string(), id));
+        } else if let Some(rest) = trimmed.strip_prefix("### ") {
+            let id = rest.to_lowercase().replace(' ', "-").replace(|c: char| !c.is_alphanumeric() && c != '-', "");
+            items.push((rest.to_string(), id));
+        }
+    }
+    items
+}
+
 fn render_markdown_with_highlighting(md: &str) -> String {
     let mut html = String::new();
     let mut in_code_block = false;
@@ -453,11 +455,14 @@ fn render_markdown_with_highlighting(md: &str) -> String {
         }
 
         if let Some(rest) = trimmed.strip_prefix("#### ") {
-            html.push_str(&format!("<h4>{}</h4>\n", render_inline(rest)));
+            let id = rest.to_lowercase().replace(' ', "-").replace(|c: char| !c.is_alphanumeric() && c != '-', "");
+            html.push_str(&format!("<h4 id=\"{}\">{}</h4>\n", id, render_inline(rest)));
         } else if let Some(rest) = trimmed.strip_prefix("### ") {
-            html.push_str(&format!("<h3>{}</h3>\n", render_inline(rest)));
+            let id = rest.to_lowercase().replace(' ', "-").replace(|c: char| !c.is_alphanumeric() && c != '-', "");
+            html.push_str(&format!("<h3 id=\"{}\">{}</h3>\n", id, render_inline(rest)));
         } else if let Some(rest) = trimmed.strip_prefix("## ") {
-            html.push_str(&format!("<h2>{}</h2>\n", render_inline(rest)));
+            let id = rest.to_lowercase().replace(' ', "-").replace(|c: char| !c.is_alphanumeric() && c != '-', "");
+            html.push_str(&format!("<h2 id=\"{}\">{}</h2>\n", id, render_inline(rest)));
         } else if let Some(rest) = trimmed.strip_prefix("# ") {
             html.push_str(&format!("<h1>{}</h1>\n", render_inline(rest)));
         } else if trimmed == "---" || trimmed == "***" {
@@ -684,6 +689,19 @@ fn App() -> impl IntoView {
         });
     }
 
+    let _keydown = {
+        let set_sidebar_open = set_sidebar_open;
+        if let Some(win) = window() {
+            let closure = wasm_bindgen::closure::Closure::wrap(Box::new(move |ev: web_sys::KeyboardEvent| {
+                if ev.key() == "Escape" {
+                    set_sidebar_open.set(false);
+                }
+            }) as Box<dyn FnMut(_)>);
+            let _ = win.add_event_listener_with_callback("keydown", closure.as_ref().unchecked_ref());
+            closure.forget();
+        }
+    };
+
     let toggle_dark = move |is_dark: bool| {
         set_dark_mode.set(is_dark);
         apply_theme(is_dark);
@@ -700,24 +718,32 @@ fn App() -> impl IntoView {
     let posts = all_posts();
 
     view! {
+        <a href="#main-content" class="skip-link">Skip to content</a>
+
         <div class="app-layout">
             <div
                 class=move || {
                     if sidebar_open.get() { "sidebar-overlay active" } else { "sidebar-overlay" }
                 }
                 on:click=close_sidebar
+                aria-hidden="true"
             />
 
-            <aside class=move || {
-                if sidebar_open.get() { "sidebar open" } else { "sidebar" }
-            }>
+            <aside
+                class=move || {
+                    if sidebar_open.get() { "sidebar open" } else { "sidebar" }
+                }
+                aria-label="Site navigation"
+            >
                 <div class="sidebar-inner">
                     <div class="sidebar-header">
-                    <div class="avatar" style="border-radius: 5px;" >
-                            <img src="https://avatars.githubusercontent.com/u/33751897?v=4&size=64" alt="Avatar" />
-                    </div>
-                        <div class="site-title">"Amirhosein Allahdadi"</div>
-                        <div class="site-subtitle">"DevOps Engineering"</div>
+                        <div class="brand-mark">
+                            <div class="brand-icon">g92</div>
+                            <div>
+                                <div class="site-title">Amirhosein Allahdadi</div>
+                                <div class="site-subtitle">DevOps Engineer</div>
+                            </div>
+                        </div>
                     </div>
 
                     <nav class="sidebar-nav">
@@ -725,9 +751,7 @@ fn App() -> impl IntoView {
 
                         <NavItem route=route_read href="/".to_string() icon="fa-solid fa-house".to_string() label="Home".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/projects".to_string() icon="fa-solid fa-code".to_string() label="Projects".to_string() close=close_sidebar />
-                        // <NavItem route=route_read href="/archives".to_string() icon="fa-solid fa-archive".to_string() label="Archives".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/categories".to_string() icon="fa-solid fa-folder-tree".to_string() label="Categories".to_string() close=close_sidebar />
-                        // <NavItem route=route_read href="/tags".to_string() icon="fa-solid fa-tags".to_string() label="Tags".to_string() close=close_sidebar />
                         <NavItem route=route_read href="/about".to_string() icon="fa-solid fa-circle-info".to_string() label="About".to_string() close=close_sidebar />
                     </nav>
 
@@ -768,11 +792,11 @@ fn App() -> impl IntoView {
             </aside>
 
             <div class="main-wrapper">
-                <header class="topbar">
-                    <button class="sidebar-toggle" on:click=toggle_sidebar aria-label="Toggle sidebar">
+                <header class="topbar" aria-label="Mobile header">
+                    <button class="sidebar-toggle" on:click=toggle_sidebar aria-label="Toggle sidebar" aria-expanded=sidebar_open>
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="topbar-title">"Amirhosein Allahdadi"</div>
+                    <div class="topbar-brand">guilt92</div>
                     <div class="topbar-actions">
                         <button class="sidebar-toggle" on:click=move |_| toggle_dark(!dark_mode.get()) aria-label="Toggle theme">
                             {move || {
@@ -795,9 +819,7 @@ fn App() -> impl IntoView {
                                 match r.as_str() {
                                     "/about" => view! { <AboutPage /> }.into_any(),
                                     "/projects" => view! { <ProjectsPage /> }.into_any(),
-                                    "/archives" => view! { <ArchivesPage posts=p.clone() /> }.into_any(),
                                     "/categories" => view! { <CategoriesPage posts=p.clone() /> }.into_any(),
-                                    "/tags" => view! { <TagsPage posts=p.clone() /> }.into_any(),
                                     _ if r.starts_with("/post/") => {
                                         let slug = r.trim_start_matches("/post/").to_string();
                                         view! { <PostPage slug=slug posts=p /> }.into_any()
@@ -809,9 +831,7 @@ fn App() -> impl IntoView {
                     </div>
 
                     <footer class="site-footer">
-                        <p>
-                            "© 2026 Guilt92"
-                        </p>
+                        <p>guilt92 &mdash; Engineering Field Notes</p>
                     </footer>
                 </div>
             </div>
@@ -842,18 +862,26 @@ where
         if href_clone == "/" {
             r == "/" || r.is_empty()
         } else {
-            r == href_clone
+            r == href_clone || r.starts_with(&format!("{}/", href_clone))
         }
     };
 
     view! {
         <div class="nav-item">
             <a
-                class=move || {
-                    if is_active() { "nav-link active" } else { "nav-link" }
+                class={
+                    let value = is_active.clone();
+                    move || {
+                        let ia = value.clone();
+                        if ia() { "nav-link active" } else { "nav-link" }
+                    }
                 }
                 href=format!("#{}", href)
                 on:click=close
+                aria-current=move || {
+                    let ia = is_active.clone();
+                    if ia() { Some("page") } else { None }
+                }
             >
                 <i class=icon></i>
                 <span>{label}</span>
@@ -870,95 +898,102 @@ where
 fn HomePage(posts: Vec<BlogPost>, _search_query: String) -> impl IntoView {
     let mut sorted = posts.clone();
     sorted.sort_by(|a, b| b.date.cmp(&a.date));
-
-    let (query, set_query) = signal(String::new());
-
-    let filtered = move || {
-        let q = query.get().to_lowercase();
-        if q.is_empty() {
-            sorted.clone()
-        } else {
-            sorted
-                .iter()
-                .filter(|p| {
-                    p.title.to_lowercase().contains(&q)
-                        || p.excerpt.to_lowercase().contains(&q)
-                        || p.tags.iter().any(|t| t.to_lowercase().contains(&q))
-                        || p.category.to_lowercase().contains(&q)
-                })
-                .cloned()
-                .collect()
-        }
-    };
+    let post_count = sorted.len();
+    let featured_post = sorted.first();
+    let recent_posts: Vec<_> = sorted.into_iter().take(7).collect();
 
     view! {
-        <div>
-            <h1 class="page-heading">"Amirhosein Allahdadi"</h1>
-            <p class="page-subheading">
-                // "Deep technical notes on systems programming, distributed systems, performance engineering, and software architecture."
-            </p>
-
-            <div class="search-wrapper">
-                <i class="fas fa-search search-icon"></i>
-                <input
-                    class="search-input"
-                    type="search"
-                    placeholder="Search posts..."
-                    aria-label="Search posts"
-                    prop:value=move || query.get()
-                    on:input=move |ev| {
-                        if let Some(target) = ev.target() {
-                            if let Ok(input) = target.dyn_into::<web_sys::HtmlInputElement>() {
-                                set_query.set(input.value());
-                            }
-                        }
-                    }
-                />
-            </div>
-
-            <section class="post-list">
-                {move || {
-                    let filtered = filtered();
-                    if filtered.is_empty() {
-                        Either::Left(view! {
-                            <div class="empty-state">
-                                <i class="fas fa-search"></i>
-                                <p>"No posts found matching your search."</p>
+        <div class="home-container">
+            <section class="home-hero">
+                <div class="home-hero-content">
+                    <div class="home-hero-main">
+                        <span class="home-eyebrow">DevOps Engineer</span>
+                        <h1 class="home-title">Amirhosein Allahdadi</h1>
+                        <p class="home-role">Building resilient infrastructure and writing about systems, Rust, and Linux.</p>
+                        <p class="home-desc">
+                            Engineering field notes on distributed systems, Rust, Kubernetes, networking, and the craft of building reliable software.
+                        </p>
+                        <div class="home-links">
+                            <a href="https://github.com/guilt92" target="_blank" rel="noopener" class="home-link">
+                                <i class="fab fa-github"></i>
+                                GitHub
+                            </a>
+                            <a href="#/about" class="home-link">
+                                <i class="fas fa-user"></i>
+                                About
+                            </a>
+                            <a href="#/archives" class="home-link">
+                                <i class="fas fa-archive"></i>
+                                Archives
+                            </a>
+                        </div>
+                    </div>
+                    <aside class="home-hero-aside">
+                        <div class="home-stats">
+                            <div class="home-stat">
+                                <span class="home-stat-value">{post_count}</span>
+                                <span class="home-stat-label">Posts</span>
                             </div>
-                        })
-                    } else {
-                        Either::Right(view! {
-                            {filtered.into_iter().enumerate().map(|(i, post)| {
-                                let delay = match i % 3 {
-                                    0 => "animate-in-delay-1",
-                                    1 => "animate-in-delay-2",
-                                    _ => "animate-in-delay-3",
-                                };
+                            <div class="home-stat">
+                                <span class="home-stat-value">4</span>
+                                <span class="home-stat-label">Categories</span>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="home-posts">
+                <div class="posts-section-header">
+                    <h2 class="posts-section-title">Recent Posts</h2>
+                    <a href="#/archives" class="posts-section-link">View all <i class="fas fa-arrow-right"></i></a>
+                </div>
+                {if recent_posts.is_empty() {
+                    Either::Left(view! {
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>"No posts yet."</p>
+                        </div>
+                    })
+                } else {
+                    Either::Right(view! {
+                        <div class="posts-grid">
+                            {recent_posts.iter().enumerate().map(|(i, post)| {
                                 let slug = post.slug.clone();
                                 let title = post.title.clone();
                                 let excerpt = post.excerpt.clone();
                                 let date = post.date.clone();
+                                let formatted_date = format_date(&date);
                                 let category = post.category.clone();
+                                let is_featured = i == 0;
                                 let tags = post.tags.clone();
-                                let class_str = format!("post-card animate-in {}", delay);
                                 view! {
-                                    <a href=format!("#/post/{}", slug) class=class_str>
-                                        <div class="post-card-header">
-                                            <span class="post-card-category">{category}</span>
-                                            <span class="post-card-date"> <i class="far fa-calendar"></i> {date}</span>
+                                <article class="post-card" class:featured=is_featured>
+                                    <span class="post-featured-badge">Featured</span>
+                                    <div class="post-card-header">
+                                            <div class="post-card-meta">
+                                                <span class="post-card-category">{category}</span>
+                                                <span class="post-card-dot"></span>
+                                                <span class="post-card-date">{formatted_date}</span>
+                                            </div>
+                                            <h3 class="post-card-title">
+                                                <a href=format!("#/post/{}", slug) >{title}</a>
+                                            </h3>
                                         </div>
-                                        <h2 class="post-card-title">{title}</h2>
                                         <p class="post-card-excerpt">{excerpt}</p>
-                                        <div class="post-card-tags">
-                                            {tags.into_iter().map(|t| {
-                                                view! { <span class="post-card-tag">"#" {t}</span> }
-                                            }).collect::<Vec<_>>()}
+                                        <div class="post-card-footer">
+                                            <div class="post-card-tags">
+                                                {tags.iter().take(3).map(|t| view! {
+                                                    <span class="post-card-tag">{format!("#{}", t)}</span>
+                                                }).collect::<Vec<_>>()}
+                                            </div>
+                                            <span class="post-card-read">Read <i class="fas fa-arrow-right"></i></span>
                                         </div>
-                                    </a>
+                                    </article>
                                 }
                             }).collect::<Vec<_>>()}
-                        })
-                    }
+                        </div>
+                    })
                 }}
             </section>
         </div>
@@ -991,7 +1026,7 @@ fn ArchivesPage(posts: Vec<BlogPost>) -> impl IntoView {
     }
 
     view! {
-        <div class="archives-page animate-in">
+        <div class="archive-page animate-in">
             <h1><i class="fas fa-archive"></i> "Archives"</h1>
 
             {years.into_iter().map(|(year, year_posts)| {
@@ -1038,36 +1073,62 @@ fn CategoriesPage(posts: Vec<BlogPost>) -> impl IntoView {
     }
     categories.sort_by(|a, b| b.1.len().cmp(&a.1.len()));
 
+    let category_icons: std::collections::HashMap<&str, &'static str> = [
+        ("Rust", "fa-brands fa-rust"),
+        ("Systems", "fa-solid fa-gears"),
+        ("Fundamentals", "fa-solid fa-book"),
+        ("DevOps", "fa-solid fa-cloud"),
+    ].into_iter().collect();
+
+    let category_descs: std::collections::HashMap<&str, &'static str> = [
+        ("Rust", "Memory safety, concurrency, and zero-cost abstractions"),
+        ("Systems", "Operating systems, networking, and distributed systems"),
+        ("Fundamentals", "Core programming concepts and patterns"),
+        ("DevOps", "Infrastructure, deployment, and automation"),
+    ].into_iter().collect();
+
     view! {
         <div class="categories-page animate-in">
-            <h1><i class="fas fa-folder-tree"></i> "Categories"</h1>
+            <header class="page-header">
+                <h1><i class="fas fa-folder-tree"></i> Categories</h1>
+                <p class="page-desc">Browse posts by topic area</p>
+            </header>
 
-            {categories.into_iter().map(|(cat, cat_posts)| {
-                view! {
-                    <div class="category-group">
-                        <h2 class="category-title">
-                            <i class="fas fa-folder"></i>
-                            {cat.clone()}
-                            <span style="font-size:13px;color:var(--text-muted);font-weight:400;">
-                                ({cat_posts.len()})
-                            </span>
-                        </h2>
-                        <div class="archive-list">
-                            {cat_posts.into_iter().map(|post| {
-                                let slug = post.slug.clone();
-                                let title = post.title.clone();
-                                let date = post.date.clone();
-                                view! {
-                                    <a href=format!("#/post/{}", slug) class="archive-item">
-                                        <span class="archive-date">{date}</span>
-                                        <span class="archive-title">{title}</span>
-                                    </a>
-                                }
-                            }).collect::<Vec<_>>()}
+            <div class="cat-grid">
+                {categories.into_iter().map(|(cat, cat_posts)| {
+                    let icon = category_icons.get(cat.as_str()).unwrap_or(&"fa-solid fa-folder").to_string();
+                    let desc = category_descs.get(cat.as_str()).unwrap_or(&"Articles and tutorials").to_string();
+                    let post_count = cat_posts.len();
+                    let cat_slug = cat.to_lowercase().replace(' ', "-");
+                    view! {
+                        <div class="cat-card" id=format!("cat-{}", cat_slug)>
+                            <div class="cat-card-head">
+                                <div class="cat-icon-wrap">
+                                    <i class={icon}></i>
+                                </div>
+                                <div class="cat-card-info">
+                                    <h2 class="cat-card-name">{cat}</h2>
+                                    <p class="cat-card-desc">{desc}</p>
+                                </div>
+                                <div class="cat-card-count">{post_count}</div>
+                            </div>
+                            <div class="cat-card-posts">
+                                {cat_posts.into_iter().map(|post| {
+                                    let slug = post.slug.clone();
+                                    let title = post.title.clone();
+                                    let date = post.date.clone();
+                                    view! {
+                                        <a href=format!("#/post/{}", slug) class="cat-card-item">
+                                            <span class="cat-card-item-title">{title}</span>
+                                            <span class="cat-card-item-date">{date}</span>
+                                        </a>
+                                    }
+                                }).collect::<Vec<_>>()}
+                            </div>
                         </div>
-                    </div>
-                }
-            }).collect::<Vec<_>>()}
+                    }
+                }).collect::<Vec<_>>()}
+            </div>
         </div>
     }
 }
@@ -1099,12 +1160,12 @@ fn TagsPage(posts: Vec<BlogPost>) -> impl IntoView {
 
             <div class="tag-cloud">
                 {tag_counts.into_iter().map(|(tag, count)| {
-                    let size = if count >= 4 { "1.1em" } else if count >= 3 { "1em" } else if count >= 2 { "0.95em" } else { "0.85em" };
+                    let _size = if count >= 4 { "1.1em" } else if count >= 3 { "1em" } else if count >= 2 { "0.95em" } else { "0.85em" };
                     view! {
-                        <span class="tag-item" style=format!("font-size:{}", size)>
-                            "#" {tag}
+                        <a href=format!("#/tag/{}", tag.clone()) class="tag-item">
+                            <span class="tag-hash">#</span>{tag.clone()}
                             <span class="tag-count">({count})</span>
-                        </span>
+                        </a>
                     }
                 }).collect::<Vec<_>>()}
             </div>
@@ -1133,26 +1194,70 @@ fn PostPage(slug: String, posts: Vec<BlogPost>) -> impl IntoView {
         }),
         Some(p) => {
             let html_content = render_markdown_with_highlighting(&p.content);
+            let toc_items = extract_toc_items(&p.content);
+            let reading_time = estimate_reading_time(&p.content);
+
+            let mut sorted = posts.clone();
+            sorted.sort_by(|a, b| b.date.cmp(&a.date));
+            let current_idx = sorted.iter().position(|x| x.slug == p.slug);
+            let prev_post = current_idx.and_then(|i| if i + 1 < sorted.len() { Some((sorted[i + 1].slug.clone(), sorted[i + 1].title.clone())) } else { None });
+            let next_post = current_idx.and_then(|i| if i > 0 { Some((sorted[i - 1].slug.clone(), sorted[i - 1].title.clone())) } else { None });
+
+            let has_toc = toc_items.len() > 2;
+
             Either::Right(view! {
-                <div class="post-page animate-in">
-                    <a href="#/" class="back-link">
-                        <i class="fas fa-arrow-left"></i>
-                        "Back to all posts"
-                    </a>
-                    <article>
-                        <header class="post-header">
-                            <div class="post-card-header" style="margin-bottom:12px;">
-                                <span class="post-card-category">{p.category.clone()}</span>
+                <div class="article-page animate-in">
+                    <div class="reading-progress" id="reading-progress"></div>
+                    <header class="article-header">
+                        <div class="article-eyebrow">
+                            <span class="article-category">{p.category.clone()}</span>
+                            <span class="article-sep">-</span>
+                            <span class="article-reading-time">{reading_time}</span>
+                        </div>
+                        <h1 class="article-title">{p.title.clone()}</h1>
+                        <div class="article-meta">
+                            <span class="article-meta-item"><i class="far fa-calendar"></i> {p.date.clone()}</span>
+                        </div>
+                        <div class="article-tags">
+                            {p.tags.clone().into_iter().map(|t| { let t2 = t.clone(); view! { <a href=format!("#/tag/{}", t) class="tag-chip">{t2}</a> } }).collect::<Vec<_>>()}
+                        </div>
+                    </header>
+                    <div class="article-body" class:has-toc=has_toc>
+                        <article class="article-content">
+                            <a href="#/" class="back-link">
+                                <i class="fas fa-arrow-left"></i>
+                                "Back to all posts"
+                            </a>
+                            <div inner_html=html_content />
+                            <nav class="article-nav">
+                                {prev_post.map(|(slug, title)| view! {
+                                    <a href=format!("#/post/{}", slug) class="article-nav-item article-nav-prev">
+                                        <span class="article-nav-label"><i class="fas fa-arrow-left"></i> Previous</span>
+                                        <span class="article-nav-title">{title}</span>
+                                    </a>
+                                })}
+                                {next_post.map(|(slug, title)| view! {
+                                    <a href=format!("#/post/{}", slug) class="article-nav-item article-nav-next">
+                                        <span class="article-nav-label">Next <i class="fas fa-arrow-right"></i></span>
+                                        <span class="article-nav-title">{title}</span>
+                                    </a>
+                                })}
+                            </nav>
+                        </article>
+                        <aside class="article-toc">
+                            <div class="toc-card">
+                                <div class="toc-title">Table of Contents</div>
+                                <nav class="toc-nav">
+                                    {toc_items.iter().map(|(level, text)| {
+                                        let id = text.to_lowercase().replace(' ', "-");
+                                        view! {
+                                            <a href=format!("#{}", id) class="toc-item">{text.clone()}</a>
+                                        }
+                                    }).collect::<Vec<_>>()}
+                                </nav>
                             </div>
-                            <h1 class="post-title">{p.title.clone()}</h1>
-                            <div class="post-meta">
-                                <span><i class="far fa-calendar"></i>{p.date.clone()}</span>
-                                <span><i class="far fa-folder"></i>{p.category.clone()}</span>
-                                <span><i class="fas fa-tags"></i>{p.tags.join(", ")}</span>
-                            </div>
-                        </header>
-                        <div class="post-content" inner_html=html_content />
-                    </article>
+                        </aside>
+                    </div>
                 </div>
             })
         }
@@ -1168,79 +1273,58 @@ fn ProjectsPage() -> impl IntoView {
     let projects = all_projects();
     
     view! {
-        <div class="projects-page animate-in">
+        <div class="projects-page">
             <header class="projects-header">
-                <h1><i class="fas fa-folder-open"></i> "Projects"</h1>
-                <p class="projects-subtitle">
-                    "A collection of my open-source projects."
-                </p>
+                <h1><i class="fas fa-folder-open"></i> Projects</h1>
+                <p>Open-source work across infrastructure, networking, and systems programming.</p>
             </header>
-            
-            <div class="projects-grid">
-                {projects.into_iter().enumerate().map(|(i, project)| {
-                    let delay_class = match i % 4 {
-                        0 => "animate-in-delay-1",
-                        1 => "animate-in-delay-2",
-                        2 => "animate-in-delay-3",
-                        _ => "animate-in-delay-4",
-                    };
-                    
-                    let language = project.language.clone().unwrap_or_else(|| "—".to_string());
-                    let lang_color = get_language_color(&language);
-                    let project_name = project.name.clone();
-                    let project_url = project.html_url.clone();
-                    let project_stars = project.stargazers_count;
-                    let project_desc = project.description.clone();
-                    let project_topics = project.topics.clone();
-                    let project_updated = project.updated_at.clone();
-                    let project_homepage = project.homepage.clone();
-                    
+
+            <div class="project-list">
+                {projects.into_iter().map(|project| {
+                    let lang_color = get_language_color(&project.language.clone().unwrap_or_default());
+                    let name = project.name.clone();
+                    let url = project.html_url.clone();
+                    let desc = project.description.clone();
+                    let lang = project.language.clone().unwrap_or_else(|| "--".to_string());
+                    let updated = project.updated_at.clone();
+                    let topics = project.topics.clone();
+                    let homepage = project.homepage.clone();
+
                     view! {
-                        <article class=format!("project-card animate-in {}", delay_class)>
-                            <header class="project-card-header">
-                                <h2 class="project-card-title">
-                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-card-link">
-                                        {project_name}
-                                    </a>
-                                </h2>
-                                <div class="project-card-meta">
-                                    <a href=project_url.clone() target="_blank" rel="noopener noreferrer" class="project-card-stars" aria-label=format!("{} stars", project_stars)>
-                                        <i class="fas fa-star"></i>
-                                        <span>{project_stars}</span>
-                                    </a>
-                                    <span class="project-card-language" style=format!("--lang-color: {};", lang_color)>
-                                        <span class="project-card-language-dot"></span>
-                                        {language}
-                                    </span>
-                                    {project_updated.split('T').next().map(|date| {
-                                        view! { <time class="project-card-updated" datetime=project_updated.clone()>{format!("Updated {}", date)}</time> }
-                                    })}
+                        <div class="project-row">
+                            <div class="project-info">
+                                <div class="project-row-head">
+                                    <a href=url.clone() target="_blank" rel="noopener" class="project-name">{name}</a>
                                 </div>
-                            </header>
-                            
-                            <p class="project-card-description">{project_desc}</p>
-                            
-                            <div class="project-card-topics">
-                                {project_topics.into_iter().map(|topic| {
-                                    view! { <span class="project-card-topic">"#" {topic}</span> }
-                                }).collect::<Vec<_>>()}
+                                <p class="project-desc">{desc}</p>
+                                <div class="project-meta">
+                                    <span class="project-lang" style=format!("--lang-color: {};", lang_color)>
+                                        <span class="project-lang-dot"></span>
+                                        {lang}
+                                    </span>
+                                    <span class="project-updated">{updated}</span>
+                                    <div class="project-topics">
+                                        {topics.into_iter().map(|t| {
+                                            view! { <a href=format!("#/tag/{}", t.clone()) class="project-topic">#{t.clone()}</a> }
+                                        }).collect::<Vec<_>>()}
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <footer class="project-card-footer">
-                                <a href=project_url target="_blank" rel="noopener noreferrer" class="project-card-btn project-card-btn-primary">
+                            <div class="project-links">
+                                <a href=url.clone() target="_blank" rel="noopener" class="project-btn project-btn-primary">
                                     <i class="fab fa-github"></i>
-                                    <span>"View on GitHub"</span>
+                                    Source
                                 </a>
-                                {project_homepage.map(|homepage| {
+                                {homepage.map(|h| {
                                     view! {
-                                        <a href=homepage target="_blank" rel="noopener noreferrer" class="project-card-btn project-card-btn-secondary">
+                                        <a href=h target="_blank" rel="noopener" class="project-btn">
                                             <i class="fas fa-external-link-alt"></i>
-                                            <span>"Live Demo"</span>
+                                            Live
                                         </a>
                                     }
                                 })}
-                            </footer>
-                        </article>
+                            </div>
+                        </div>
                     }
                 }).collect::<Vec<_>>()}
             </div>
@@ -1275,66 +1359,126 @@ fn get_language_color(lang: &str) -> &'static str {
 fn AboutPage() -> impl IntoView {
     view! {
         <div class="about-page animate-in">
-            <h1>"About"</h1>
-            <div class="about-card">
-                <p>
-                    "Hi, I'm a DevOps engineer with a strong interest in Rust, Linux,
-                    systems programming, and infrastructure. I enjoy building software,
-                    exploring how systems work internally, and learning by creating real
-                    projects."
-                </p>
-                <p style="margin-top:16px;">
-                    "This website is where I document what I'm learning, share personal
-                    projects, and write about topics that I find interesting—from Rust and
-                    Linux to networking, distributed systems, and software architecture."
-                </p>
+            <header class="page-header">
+                <h1><i class="fas fa-user"></i> About</h1>
+            </header>
+
+            <div class="about-content">
+                <section class="about-main">
+                    <p class="about-lead">
+                        DevOps engineer with a focus on Rust, Linux, systems programming, and infrastructure.
+                        I build software that explores how systems work internally, and learn by creating real projects.
+                    </p>
+
+                    <p>
+                        This website is where I document what I am learning, share personal projects, and write about topics
+                        I find interesting - from Rust and Linux to networking, distributed systems, and software architecture.
+                    </p>
+
+                    <p>
+                        I use this site to keep track of what I learn, document projects, and share practical knowledge.
+                        Everything here reflects my learning journey and the projects I am actively working on.
+                    </p>
+                </section>
+
+                <section class="about-sidebar">
+                    <div class="about-topics-card">
+                        <h2 class="about-section-title">Topics</h2>
+                        <div class="about-topics-list">
+                            <div class="about-topic-row">
+                                <i class="fa-brands fa-rust"></i>
+                                <span>Rust and systems programming</span>
+                            </div>
+                            <div class="about-topic-row">
+                                <i class="fa-solid fa-server"></i>
+                                <span>Linux and OS internals</span>
+                            </div>
+                            <div class="about-topic-row">
+                                <i class="fa-solid fa-network-wired"></i>
+                                <span>Networking, DNS, and infrastructure</span>
+                            </div>
+                            <div class="about-topic-row">
+                                <i class="fa-solid fa-rocket"></i>
+                                <span>Performance and architecture</span>
+                            </div>
+                            <div class="about-topic-row">
+                                <i class="fa-solid fa-code"></i>
+                                <span>Personal projects and experiments</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-links-card">
+                        <h2 class="about-section-title">Connect</h2>
+                        <div class="about-links">
+                            <a href="https://github.com/guilt92" target="_blank" rel="noopener" class="about-link">
+                                <i class="fab fa-github"></i>
+                                "GitHub"
+                            </a>
+                            <a href="https://x.com/Aallahdadi92" target="_blank" rel="noopener" class="about-link">
+                                <i class="fab fa-x-twitter"></i>
+                                "Twitter / X"
+                            </a>
+                            <a href="mailto:amirhoseinalahdadi76@gmail.com" class="about-link">
+                                <i class="fas fa-envelope"></i>
+                                "Email"
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    }
+}
+
+
+// ============================================
+// Tag Filter Page
+// ============================================
+
+#[component]
+fn TagPage(tag: String, posts: Vec<BlogPost>) -> impl IntoView {
+    let filtered: Vec<BlogPost> = posts
+        .into_iter()
+        .filter(|p| p.tags.iter().any(|t| t == &tag))
+        .collect();
+
+    let formatted_tag = format!("#{}", tag);
+
+    view! {
+        <div class="tag-posts-page">
+            <div class="tag-posts-header">
+                <a href="#/tags" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    All tags
+                </a>
+                <h2>{formatted_tag}</h2>
             </div>
 
-            <h2>"Topics You'll Find Here"</h2>
-
-            <ul style="padding-left:20px;list-style:disc;">
-                <li style="margin-bottom:8px;color:var(--text-secondary);">
-                    "Rust and systems programming"
-                </li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">
-                    "Linux and operating system internals"
-                </li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">
-                    "Networking, DNS, and infrastructure"
-                </li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">
-                    "Performance and software architecture"
-                </li>
-                <li style="margin-bottom:8px;color:var(--text-secondary);">
-                    "Personal projects and open-source experiments"
-                </li>
-            </ul>
-
-            <h2>"Why This Site?"</h2>
-
-            <div class="about-card">
-                <p>
-                    "I use this site to keep track of what I learn, document projects,
-                    and share practical knowledge. Everything here reflects my learning
-                    journey and the projects I'm actively working on."
-                </p>
-            </div>
-
-            <h2>"Connect"</h2>
-            <div class="about-links">
-                <a href="https://github.com/guilt92" target="_blank" rel="noopener" class="about-link">
-                    <i class="fab fa-github"></i>
-                    "GitHub"
-                </a>
-                <a href="https://x.com/Aallahdadi92" target="_blank" rel="noopener" class="about-link">
-                    <i class="fab fa-x-twitter"></i>
-                    "Twitter / X"
-                </a>
-                <a href="mailto:amirhoseinalahdadi76@gmail.com" class="about-link">
-                    <i class="fas fa-envelope"></i>
-                    "Email"
-                </a>
-            </div>
+            {if filtered.is_empty() {
+                Either::Left(view! {
+                    <div class="empty-state">
+                        <i class="fas fa-tag"></i>
+                        <p>"No posts with this tag yet."</p>
+                    </div>
+                })
+            } else {
+                Either::Right(view! {
+                    <div class="archive-list">
+                        {filtered.into_iter().map(|post| {
+                            let slug = post.slug.clone();
+                            let title = post.title.clone();
+                            let category = post.category.clone();
+                            view! {
+                                <a href=format!("#/post/{}", slug) class="archive-item">
+                                    <span class="archive-title">{title}</span>
+                                    <span class="archive-category">{category}</span>
+                                </a>
+                            }
+                        }).collect::<Vec<_>>()}
+                    </div>
+                })
+            }}
         </div>
     }
 }
